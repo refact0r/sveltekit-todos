@@ -3,8 +3,8 @@
   publish = "build"
  
 [dev]
-  command = "npm run dev"
+  command = "svelte-kit dev"
  
 [functions]
-  directory = "/functions"
+  directory = "netlify/functions"
   node_bundler = "esbuild"
