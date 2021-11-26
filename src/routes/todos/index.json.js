@@ -56,7 +56,7 @@ export async function put(request) {
 		const db = client.db('Todos')
 		const collection = db.collection('Todos')
 		const todo = JSON.parse(request.body)
-		await collection.update(
+		await collection.updateOne(
 			{ _id: ObjectId(todo._id) },
 			{ $set: { completed: todo.completed } }
 		)
