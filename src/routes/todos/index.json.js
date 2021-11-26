@@ -78,4 +78,27 @@ export async function put(request) {
 	}
 }
 
-export async function del(request) {}
+export async function del(request) {
+	try {
+		const client = await clientPromise
+		const db = client.db('Todos')
+		const collection = db.collection('Todos')
+		const todo = JSON.parse(request.body)
+		await collection.deleteOne({ _id: ObjectId(todo._id) })
+
+		return {
+			status: 200,
+			body: {
+				status: 'Success'
+			}
+		}
+	} catch (err) {
+		console.log(err)
+		return {
+			status: 500,
+			body: {
+				error: 'An error occured'
+			}
+		}
+	}
+}

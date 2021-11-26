@@ -17,6 +17,9 @@
 	}
 
 	async function addTodo() {
+		if (text == '') {
+			return
+		}
 		const todo = {
 			name: text,
 			completed: false
@@ -37,6 +40,14 @@
 		})
 		loadTodos()
 	}
+
+	async function deleteTodo(todo) {
+		await fetch('/todos.json', {
+			method: 'DELETE',
+			body: JSON.stringify(todo)
+		})
+		loadTodos()
+	}
 </script>
 
 <svelte:head>
@@ -47,7 +58,7 @@
 	<h1>Todos</h1>
 	<form on:submit|preventDefault={addTodo}>
 		<input type="text" placeholder="enter a todo" bind:value={text} />
-		<button type="submit">add</button>
+		<button class="addButton" type="submit">add</button>
 	</form>
 	<br />
 	{#each todos as todo}
@@ -59,10 +70,10 @@
 					on:change={completeTodo(todo)}
 				/>
 				{todo.name}
+				<button class="deleteButton" on:click={deleteTodo(todo)}>delete</button>
 			</div>
 		{/if}
 	{/each}
-	<br />
 	<h2>Completed</h2>
 	{#each todos as todo}
 		{#if todo.completed}
@@ -73,6 +84,7 @@
 					on:change={completeTodo(todo)}
 				/>
 				{todo.name}
+				<button class="deleteButton" on:click={deleteTodo(todo)}>delete</button>
 			</div>
 		{/if}
 	{/each}
@@ -91,7 +103,23 @@
 	input[type='text'] {
 		width: 100%;
 	}
+	input[type='checkbox'] {
+		margin: 0 10px;
+	}
 	.completed {
-		text-decoration: line-through;
+	}
+	.todo {
+		display: flex;
+		width: 100%;
+		align-items: center;
+		margin: 10px 0;
+	}
+	.deleteButton {
+		margin-left: auto;
+		min-width: 80px;
+	}
+	.addButton {
+		margin-left: 10px;
+		min-width: 80px;
 	}
 </style>
