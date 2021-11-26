@@ -34,6 +34,7 @@
 	}
 
 	async function completeTodo(todo) {
+		todo.completed = !todo.completed
 		await fetch('/todos.json', {
 			method: 'PUT',
 			body: JSON.stringify(todo)
@@ -66,8 +67,8 @@
 			<div class="todo">
 				<input
 					type="checkbox"
-					bind:checked={todo.completed}
-					on:change={completeTodo(todo)}
+					checked={todo.completed}
+					on:change={() => completeTodo(todo)}
 				/>
 				{todo.name}
 				<button class="deleteButton" on:click={deleteTodo(todo)}>delete</button>
@@ -80,8 +81,8 @@
 			<div class="todo completed">
 				<input
 					type="checkbox"
-					bind:checked={todo.completed}
-					on:change={completeTodo(todo)}
+					checked={todo.completed}
+					on:change={() => completeTodo(todo)}
 				/>
 				{todo.name}
 				<button class="deleteButton" on:click={deleteTodo(todo)}>delete</button>
