@@ -1,9 +1,9 @@
 <script context="module">
-	export const prerender = true;
+	export const prerender = true
 </script>
 
 <script>
-	import Counter from '$lib/Counter.svelte';
+	import Counter from '$lib/Counter.svelte'
 </script>
 
 <svelte:head>

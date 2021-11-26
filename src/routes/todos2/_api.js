@@ -9,12 +9,12 @@
 	guarantees are made. Don't use it to organise your life.)
 */
 
-const base = 'https://api.svelte.dev';
+const base = 'https://api.svelte.dev'
 
 export async function api(request, resource, data) {
 	// user must have a cookie set
 	if (!request.locals.userid) {
-		return { status: 401 };
+		return { status: 401 }
 	}
 
 	const res = await fetch(`${base}/${resource}`, {
@@ -23,7 +23,7 @@ export async function api(request, resource, data) {
 			'content-type': 'application/json'
 		},
 		body: data && JSON.stringify(data)
-	});
+	})
 
 	// if the request came from a <form> submission, the browser's default
 	// behaviour is to show the URL corresponding to the form's "action"
@@ -35,11 +35,11 @@ export async function api(request, resource, data) {
 			headers: {
 				location: '/todos'
 			}
-		};
+		}
 	}
 
 	return {
 		status: res.status,
 		body: await res.json()
-	};
+	}
 }
