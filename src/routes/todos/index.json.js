@@ -1,28 +1,81 @@
-import { api } from './_api';
+import clientPromise from '$lib/db'
+import { ObjectId } from 'mongodb'
 
-// GET /todos.json
-export const get = async (request) => {
-	// request.locals.userid comes from src/hooks.js
-	const response = await api(request, `todos/${request.locals.userid}`);
+export async function get(request) {
+	try {
+		const client = await clientPromise
+		const db = client.db('Todos')
+		const collection = db.collection('Todos')
+		const todos = await collection.find({}).toArray()
 
-	if (response.status === 404) {
-		// user hasn't created a todo list.
-		// start with an empty array
-		return { body: [] };
+		return {
+			status: 200,
+			body: {
+				todos
+			}
+		}
+	} catch (err) {
+		console.log(err)
+		return {
+			status: 500,
+			body: {
+				error: 'An error occured'
+			}
+		}
 	}
+}
 
-	return response;
-};
+export async function post(request) {
+	try {
+		const client = await clientPromise
+		const db = client.db('Todos')
+		const collection = db.collection('Todos')
+		const todo = JSON.parse(request.body)
+		await collection.insertOne(todo)
 
-// POST /todos.json
-export const post = async (request) => {
-	const response = await api(request, `todos/${request.locals.userid}`, {
-		// because index.svelte posts a FormData object,
-		// request.body is _also_ a (readonly) FormData
-		// object, which allows us to get form data
-		// with the `body.get(key)` method
-		text: request.body.get('text')
-	});
+		return {
+			status: 200,
+			body: {
+				status: 'Success'
+			}
+		}
+	} catch (err) {
+		console.log(err)
+		return {
+			status: 500,
+			body: {
+				error: 'An error occured'
+			}
+		}
+	}
+}
 
-	return response;
-};
+export async function put(request) {
+	try {
+		const client = await clientPromise
+		const db = client.db('Todos')
+		const collection = db.collection('Todos')
+		const todo = JSON.parse(request.body)
+		await collection.update(
+			{ _id: ObjectId(todo._id) },
+			{ $set: { completed: todo.completed } }
+		)
+
+		return {
+			status: 200,
+			body: {
+				status: 'Success'
+			}
+		}
+	} catch (err) {
+		console.log(err)
+		return {
+			status: 500,
+			body: {
+				error: 'An error occured'
+			}
+		}
+	}
+}
+
+export async function del(request) {}
