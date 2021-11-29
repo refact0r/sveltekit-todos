@@ -26,7 +26,6 @@ body {
 		var(--secondary-color) 10.45%,
 		var(--tertiary-color) 41.35%
 	);
-	font-size: 1.2rem;
 }
 
 body::before {

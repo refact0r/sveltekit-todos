@@ -1,5 +1,11 @@
 <script context="module">
-	export async function load({ fetch }) {
+	export async function load({ fetch, session }) {
+		if (!session.user) {
+			return {
+				status: 302,
+				redirect: '/login'
+			}
+		}
 		const res = await fetch('/todos.json')
 		const json = await res.json()
 		return { props: { todos: json.todos } }
@@ -42,6 +48,15 @@
 		loadTodos()
 	}
 
+	async function editTodo(todo, name) {
+		todo.name = name
+		await fetch('/todos.json', {
+			method: 'PUT',
+			body: JSON.stringify(todo)
+		})
+		loadTodos()
+	}
+
 	async function deleteTodo(todo) {
 		await fetch('/todos.json', {
 			method: 'DELETE',
@@ -70,7 +85,12 @@
 					checked={todo.completed}
 					on:change={() => completeTodo(todo)}
 				/>
-				{todo.name}
+				<input
+					class="todoName"
+					type="text"
+					value={todo.name}
+					on:change={(e) => editTodo(todo, e.target.value)}
+				/>
 				<button class="deleteButton" on:click={deleteTodo(todo)}>delete</button>
 			</div>
 		{/if}
@@ -84,7 +104,12 @@
 					checked={todo.completed}
 					on:change={() => completeTodo(todo)}
 				/>
-				{todo.name}
+				<input
+					class="todoName"
+					type="text"
+					value={todo.name}
+					on:change={(e) => editTodo(todo, e.target.value)}
+				/>
 				<button class="deleteButton" on:click={deleteTodo(todo)}>delete</button>
 			</div>
 		{/if}
@@ -101,26 +126,32 @@
 		width: 100%;
 		display: flex;
 	}
-	input[type='text'] {
-		width: 100%;
-	}
-	input[type='checkbox'] {
-		margin: 0 10px;
-	}
-	.completed {
-	}
 	.todo {
 		display: flex;
 		width: 100%;
 		align-items: center;
 		margin: 10px 0;
 	}
-	.deleteButton {
-		margin-left: auto;
+	.todoName {
+		background: none;
+		border: none;
+	}
+	input[type='text'] {
+		width: 100%;
+	}
+	input[type='checkbox'] {
+		margin: 0 10px 0 0;
+	}
+	button {
 		min-width: 80px;
+	}
+	.editButton {
+		margin-left: auto;
+	}
+	.deleteButton {
+		margin-left: 10px;
 	}
 	.addButton {
 		margin-left: 10px;
-		min-width: 80px;
 	}
 </style>

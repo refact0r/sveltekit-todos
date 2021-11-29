@@ -1,7 +1,7 @@
 import clientPromise from '$lib/db'
 import { ObjectId } from 'mongodb'
 
-export async function get(request) {
+export async function get() {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
@@ -58,7 +58,7 @@ export async function put(request) {
 		const todo = JSON.parse(request.body)
 		await collection.updateOne(
 			{ _id: ObjectId(todo._id) },
-			{ $set: { completed: todo.completed } }
+			{ $set: { name: todo.name, completed: todo.completed } }
 		)
 
 		return {
