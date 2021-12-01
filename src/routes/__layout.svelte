@@ -1,11 +1,11 @@
 <script>
 	import '../app.css'
-	import Header from '$lib/header/Header.svelte'
+	import Nav from '$lib/header/Nav.svelte'
 	import { session } from '$app/stores'
 </script>
 
 {#if $session.user}
-	<Header />
+	<Nav />
 {/if}
 
 <main>
@@ -13,6 +13,10 @@
 </main>
 
 <style>
+	main {
+		width: 100%;
+	}
+	/*
 	main {
 		flex: 1;
 		display: flex;
@@ -41,4 +45,5 @@
 			padding: 40px 0;
 		}
 	}
+	*/
 </style>

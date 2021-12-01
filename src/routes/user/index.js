@@ -16,7 +16,7 @@ export const get = async (context) => {
 		}
 	}
 
-	const user = await db.collection('users').findOne({ uid: context.locals.user.uid })
+	const user = await db.collection('users').findOne({ _id: context.locals.user.uid })
 
 	if (!user) {
 		return {
