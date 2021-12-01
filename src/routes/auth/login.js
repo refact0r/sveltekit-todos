@@ -30,16 +30,15 @@ export const post = async ({ body }) => {
 	const cookieId = uuid()
 
 	// Look for existing email to avoid duplicate entries
-	const duplicateUser = await db.collection('cookies').findOne({ uid: user.uid })
+	const duplicateUser = await db.collection('cookies').findOne({ uid: user._id })
 
 	// If there is user with cookie, update the cookie, otherwise create a new DB entry
 	if (duplicateUser) {
-		await db.collection('cookies').updateOne({ uid: user.uid }, { $set: { cookieId } })
+		await db
+			.collection('cookies')
+			.updateOne({ uid: user._id }, { $set: { cookieId: cookieId } })
 	} else {
-		await db.collection('cookies').insertOne({
-			cookieId,
-			uid: user.uid
-		})
+		await db.collection('cookies').insertOne({ cookieId: cookieId, uid: user._id })
 	}
 
 	// Set cookie
@@ -58,7 +57,7 @@ export const post = async ({ body }) => {
 		body: {
 			message: 'Success',
 			user: {
-				uid: user.uid,
+				uid: user._id,
 				name: user.name,
 				email: user.email
 			}

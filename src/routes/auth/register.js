@@ -27,7 +27,7 @@ export const post = async ({ body }) => {
 	// All database code can only run inside async functions as it uses await
 	const uid = uuid()
 	await db.collection('users').insertOne({
-		uid: uid,
+		_id: uid,
 		name: body.name,
 		email: body.email,
 		password: stringHash(body.password)
@@ -37,7 +37,7 @@ export const post = async ({ body }) => {
 	// All database code can only run inside async functions as it uses await
 	const cookieId = uuid()
 	await db.collection('cookies').insertOne({
-		cookieId,
+		cookieId: cookieId,
 		uid: uid
 	})
 

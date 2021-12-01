@@ -1,9 +1,19 @@
 <script context="module">
-	export async function load({ session }) {
+	export async function load({ fetch, session }) {
 		if (!session.user) {
 			return {
 				status: 302,
 				redirect: '/login'
+			}
+		}
+
+		if (!session.user.name) {
+			const res = await fetch('/user')
+			const user = await res.json()
+			session.user = {
+				uid: user._id,
+				name: user.name,
+				email: user.email
 			}
 		}
 
