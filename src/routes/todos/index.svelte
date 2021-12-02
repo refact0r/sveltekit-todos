@@ -13,6 +13,8 @@
 </script>
 
 <script>
+	import About from '../about.svelte'
+
 	export let todos
 	export let user
 	let text = ''
@@ -72,7 +74,7 @@
 </svelte:head>
 
 <div class="todos">
-	<div class="header-box">
+	<div class="header-container">
 		<h1 class="header">Todos</h1>
 	</div>
 	<div class="list">
@@ -132,16 +134,15 @@
 	.todos {
 		display: flex;
 		flex-direction: column;
-		height: 100vh;
-		box-sizing: border-box;
+		position: relative;
+		height: 100%;
+		overflow-y: scroll;
+		scrollbar-color: var(--scrollbar-color) transparent;
+		scrollbar-width: thin;
 	}
 
 	.list {
-		padding: 10px 32.5px 0px 40px;
-		overflow-y: auto;
-		scrollbar-gutter: stable;
-		scrollbar-color: var(--bg-color-2) transparent;
-		scrollbar-width: thin;
+		padding: 10px 40px 88px 40px;
 	}
 
 	button {
@@ -217,6 +218,29 @@
 		outline: none;
 	}
 
+	.header-container {
+		background: var(--bg-color-1);
+		position: sticky;
+		top: 0;
+		width: 100%;
+		padding: 20px 40px 10px 40px;
+		border-radius: 18px;
+	}
+
+	.header {
+		margin: 0;
+	}
+
+	.new-container {
+		margin-top: auto;
+		background: var(--bg-color-1);
+		padding: 10px 40px 20px 40px;
+		position: sticky;
+		bottom: 0;
+		width: 100%;
+		border-radius: 18px;
+	}
+
 	.new {
 		display: flex;
 		background: var(--bg-color-2);
@@ -226,12 +250,6 @@
 	}
 	.new .name {
 		width: 100%;
-	}
-
-	.new-container {
-		margin-top: auto;
-		background: var(--bg-color-1);
-		padding: 10px 40px 40px 40px;
 	}
 
 	.add {
@@ -245,17 +263,6 @@
 	}
 	.add:hover {
 		color: var(--font-color);
-	}
-
-	.header {
-		margin: 0;
-	}
-
-	.header-box {
-		background: var(--bg-color-1);
-		position: sticky;
-		top: 0;
-		padding: 40px 40px 10px 40px;
 	}
 
 	/*

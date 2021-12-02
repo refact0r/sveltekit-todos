@@ -37,12 +37,14 @@
 	.header {
 		display: flex;
 		align-items: center;
-		margin: 10px 0 20px 0;
+		margin: 10px 0 20px 5px;
 	}
 
 	.header img {
 		width: 32px;
 		height: 32px;
+		filter: saturate(0) brightness(0.6) contrast(2) invert(77%) sepia(38%) saturate(246%)
+			hue-rotate(156deg) brightness(86%) contrast(89%);
 	}
 
 	h1 {
