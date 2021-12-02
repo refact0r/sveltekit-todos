@@ -8,6 +8,7 @@
 	--bg-color-3: hsl(200, 17%, 17%);
 	--sub-color: hsl(200, 18%, 26%);
 	--font-color: hsl(200, 37%, 68%);
+	--scrollbar-color: hsla(200, 17%, 12%, 0.5);
 }
 
 * {
@@ -17,7 +18,7 @@
 body {
 	min-height: 100vh;
 	margin: 0;
-	background: var(--bg-color-1);
+	background: var(--bg-color-2);
 	color: var(--font-color);
 }
 
