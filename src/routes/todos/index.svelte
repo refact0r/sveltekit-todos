@@ -73,7 +73,7 @@
 	<title>Todos</title>
 </svelte:head>
 
-<div class="todos">
+<div class="content">
 	<div class="header-container">
 		<h1 class="header">Todos</h1>
 	</div>
@@ -194,6 +194,9 @@
 	.checkbox:hover {
 		background: var(--sub-color);
 	}
+	.checkbox:active {
+		background: var(--font-color);
+	}
 	.checkbox i {
 		display: none;
 		margin-right: 2px;
@@ -264,44 +267,4 @@
 	.add:hover {
 		color: var(--font-color);
 	}
-
-	/*
-	.todos {
-		width: 100%;
-		max-width: var(--column-width);
-		margin: var(--column-margin-top) auto 0 auto;
-	}
-	form {
-		width: 100%;
-		display: flex;
-	}
-	.todo {
-		display: flex;
-		width: 100%;
-		align-items: center;
-		margin: 10px 0;
-	}
-	.todoName {
-		background: none;
-		border: none;
-	}
-	input[type='text'] {
-		width: 100%;
-	}
-	input[type='checkbox'] {
-		margin: 0 10px 0 0;
-	}
-	button {
-		min-width: 80px;
-	}
-	.editButton {
-		margin-left: auto;
-	}
-	.deleteButton {
-		margin-left: 10px;
-	}
-	.addButton {
-		margin-left: 10px;
-	}
-	*/
 </style>
