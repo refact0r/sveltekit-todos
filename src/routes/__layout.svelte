@@ -18,7 +18,7 @@
 		height: calc(100vh - 40px);
 		border-radius: 18px;
 		background: var(--bg-color-1);
-		margin: 20px;
+		margin: 20px 20px 20px 0;
 		padding: 20px 0;
 	}
 	/*
