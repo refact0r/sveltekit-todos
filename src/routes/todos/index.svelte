@@ -153,9 +153,6 @@
 		background: var(--bg-color-2);
 		padding: 0;
 	}
-	input::placeholder {
-		color: var(--sub-color);
-	}
 
 	.todo {
 		display: flex;
