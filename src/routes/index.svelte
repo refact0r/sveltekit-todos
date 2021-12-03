@@ -3,6 +3,7 @@
 </script>
 
 <script>
+	import Welcome from '$lib/Welcome.svelte'
 	import { session } from '$app/stores'
 </script>
 
@@ -23,9 +24,7 @@
 			to your new<br />SvelteKit app
 		</h1>
 	{:else}
-		<h1>Welcome</h1>
-		<a href="/login">login</a>
-		<a href="/register">register</a>
+		<Welcome />
 	{/if}
 </section>
 
