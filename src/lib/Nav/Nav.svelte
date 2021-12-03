@@ -20,7 +20,7 @@
 		flex-direction: column;
 		width: 240px;
 		background: var(--bg-color-2);
-		padding: 20px;
+		padding: 20px 0 20px 20px;
 	}
 
 	a {

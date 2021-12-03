@@ -125,13 +125,13 @@
 	<div class="new-container">
 		<form class="new" on:submit|preventDefault={addTodo}>
 			<button class="add" type="submit"><i class="bi bi-plus-lg" /></button>
-			<input class="name" type="text" placeholder="add a todo" bind:value={text} />
+			<input class="name" type="text" placeholder="Add a todo" bind:value={text} />
 		</form>
 	</div>
 </div>
 
 <style>
-	.todos {
+	.content {
 		display: flex;
 		flex-direction: column;
 		position: relative;
@@ -146,20 +146,11 @@
 	}
 
 	button {
-		color: inherit;
-		font: inherit;
 		background: var(--bg-color-2);
-		border: none;
-	}
-	button:hover {
-		cursor: pointer;
 	}
 
 	input {
-		color: inherit;
-		font: inherit;
 		background: var(--bg-color-2);
-		border: none;
 		padding: 0;
 	}
 	input::placeholder {
@@ -192,7 +183,7 @@
 		line-height: 20px;
 	}
 	.checkbox:hover {
-		background: var(--sub-color);
+		background: var(--bg-color-3-5);
 	}
 	.checkbox:active {
 		background: var(--font-color);
