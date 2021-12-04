@@ -74,71 +74,78 @@
 </svelte:head>
 
 <div class="content">
-	<div class="header-container">
-		<h1 class="header">Todos</h1>
-	</div>
-	<div class="list">
-		{#each todos as todo}
-			{#if !todo.completed}
-				<div class="todo">
-					<button
-						class={todo.completed ? 'checkbox checked' : 'checkbox'}
-						on:click={() => completeTodo(todo)}
-					>
-						<i class="bi bi-check-lg" />
-					</button>
-					<input
-						class="name"
-						type="text"
-						value={todo.name}
-						on:change={(e) => editTodo(todo, e.target.value)}
-					/>
-					<button class="delete" on:click={deleteTodo(todo)}
-						><i class="bi bi-x-lg" /></button
-					>
-				</div>
-			{/if}
-		{/each}
-		<h2>Completed</h2>
-		{#each todos as todo}
-			{#if todo.completed}
-				<div class="todo completed">
-					<button
-						class={todo.completed ? 'checkbox checked' : 'checkbox'}
-						on:click={() => completeTodo(todo)}
-					>
-						<i class="bi bi-check-lg" />
-					</button>
-					<input
-						class="name"
-						type="text"
-						value={todo.name}
-						on:change={(e) => editTodo(todo, e.target.value)}
-					/>
-					<button class="delete" on:click={deleteTodo(todo)}
-						><i class="bi bi-x-lg" /></button
-					>
-				</div>
-			{/if}
-		{/each}
-	</div>
-	<div class="new-container">
-		<form class="new" on:submit|preventDefault={addTodo}>
-			<button class="add" type="submit"><i class="bi bi-plus-lg" /></button>
-			<input class="name" type="text" placeholder="Add a todo" bind:value={text} />
-		</form>
+	<div class="list-container">
+		<div class="header-container">
+			<h1 class="header">Todos</h1>
+		</div>
+		<div class="list">
+			{#each todos as todo}
+				{#if !todo.completed}
+					<div class="todo">
+						<button
+							class={todo.completed ? 'checkbox checked' : 'checkbox'}
+							on:click={() => completeTodo(todo)}
+						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<input
+							class="name"
+							type="text"
+							value={todo.name}
+							on:change={(e) => editTodo(todo, e.target.value)}
+						/>
+						<button class="delete" on:click={deleteTodo(todo)}
+							><i class="bi bi-x-lg" /></button
+						>
+					</div>
+				{/if}
+			{/each}
+			<h2>Completed</h2>
+			{#each todos as todo}
+				{#if todo.completed}
+					<div class="todo completed">
+						<button
+							class={todo.completed ? 'checkbox checked' : 'checkbox'}
+							on:click={() => completeTodo(todo)}
+						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<input
+							class="name"
+							type="text"
+							value={todo.name}
+							on:change={(e) => editTodo(todo, e.target.value)}
+						/>
+						<button class="delete" on:click={deleteTodo(todo)}
+							><i class="bi bi-x-lg" /></button
+						>
+					</div>
+				{/if}
+			{/each}
+		</div>
+		<div class="new-container">
+			<form class="new" on:submit|preventDefault={addTodo}>
+				<button class="add" type="submit"><i class="bi bi-plus-lg" /></button>
+				<input class="name" type="text" placeholder="Add a todo" bind:value={text} />
+			</form>
+		</div>
 	</div>
 </div>
 
 <style>
 	.content {
-		display: flex;
-		flex-direction: column;
 		position: relative;
 		height: 100%;
+		padding: 20px 0;
+	}
+
+	.list-container {
+		display: flex;
+		flex-direction: column;
 		overflow-y: scroll;
-		scrollbar-color: var(--scrollbar-color) transparent;
+		scrollbar-color: var(--bg-color-1-5) transparent;
 		scrollbar-width: thin;
+		height: 100%;
 	}
 
 	.list {
