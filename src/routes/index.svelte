@@ -11,8 +11,8 @@
 	<title>Home</title>
 </svelte:head>
 
-<div class="content">
-	{#if $session.user}
+{#if $session.user}
+	<div class="content">
 		<h1>
 			<div class="welcome">
 				<picture>
@@ -23,10 +23,10 @@
 
 			to your new SvelteKit app
 		</h1>
-	{:else}
-		<Welcome />
-	{/if}
-</div>
+	</div>
+{:else}
+	<Welcome />
+{/if}
 
 <style>
 	.content {
