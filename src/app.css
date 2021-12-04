@@ -55,6 +55,11 @@ button {
 	border: none;
 }
 
+
+input::placeholder {
+	color: var(--sub-color);
+}
+
 button:hover {
 	cursor: pointer;
 }
