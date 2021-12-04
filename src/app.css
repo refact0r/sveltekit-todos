@@ -56,7 +56,8 @@ button {
 }
 
 
-input::placeholder {
+input::placeholder,
+::-webkit-input-placeholder {
 	color: var(--sub-color);
 }
 
