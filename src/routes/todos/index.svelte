@@ -75,8 +75,8 @@
 
 <div class="content">
 	<div class="list-container">
-		<div class="header-container">
-			<h1 class="header">Todos</h1>
+		<div class="heading-container">
+			<h1>Todos</h1>
 		</div>
 		<div class="list">
 			{#each todos as todo}
@@ -216,7 +216,7 @@
 		outline: none;
 	}
 
-	.header-container {
+	.heading-container {
 		background: var(--bg-color-1);
 		position: sticky;
 		top: 0;
@@ -225,7 +225,7 @@
 		border-radius: 18px;
 	}
 
-	.header {
+	h1 {
 		margin: 0;
 	}
 

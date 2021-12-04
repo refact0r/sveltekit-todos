@@ -28,6 +28,7 @@
 
 <script>
 	import { onMount } from 'svelte'
+	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
 
 	export let email
@@ -47,6 +48,7 @@
 			method: 'POST'
 		})
 		$session.user = null
+		goto('/')
 	}
 </script>
 
