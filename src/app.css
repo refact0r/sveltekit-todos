@@ -43,6 +43,11 @@ body {
 	background: var(--bg-color-1-5);
 }
 
+::placeholder,
+::-webkit-input-placeholder {
+	color: var(--sub-color);
+}
+
 :focus {
 	outline: none;
 }
@@ -52,11 +57,6 @@ button {
 	color: inherit;
 	font: inherit;
 	border: none;
-}
-
-input::placeholder,
-::-webkit-input-placeholder {
-	color: var(--sub-color);
 }
 
 button:hover {
