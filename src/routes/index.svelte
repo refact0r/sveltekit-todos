@@ -11,7 +11,7 @@
 	<title>Home</title>
 </svelte:head>
 
-<section>
+<div class="content">
 	{#if $session.user}
 		<h1>
 			<div class="welcome">
@@ -21,24 +21,21 @@
 				</picture>
 			</div>
 
-			to your new<br />SvelteKit app
+			to your new SvelteKit app
 		</h1>
 	{:else}
 		<Welcome />
 	{/if}
-</section>
+</div>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 1;
+	.content {
+		padding: 40px;
 	}
 
 	h1 {
 		width: 100%;
+		text-align: center;
 	}
 
 	.welcome {

@@ -50,6 +50,24 @@
 	}
 </script>
 
-<h1>Profile</h1>
-<p>Hello {name} you are logged in with the email {email}</p>
-<button on:click={logout}>log out</button>
+<div class="content">
+	<h1>Profile</h1>
+	<p>Hello {name} you are logged in with the email {email}</p>
+	<button on:click={logout}>log out</button>
+</div>
+
+<style>
+	.content {
+		padding: 40px;
+	}
+
+	h1 {
+		margin-top: 0;
+	}
+
+	button {
+		background: var(--bg-color-2);
+		padding: 10px;
+		border-radius: 12px;
+	}
+</style>

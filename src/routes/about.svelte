@@ -43,8 +43,10 @@
 
 <style>
 	.content {
-		width: 100%;
-		max-width: var(--column-width);
-		margin: var(--column-margin-top) auto 0 auto;
+		padding: 40px;
+	}
+
+	h1 {
+		margin-top: 0;
 	}
 </style>

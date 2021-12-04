@@ -44,6 +44,10 @@ body {
 	background: var(--bg-color-2);
 }
 
+:focus {
+	outline: none;
+}
+
 input,
 button {
 	color: inherit;
