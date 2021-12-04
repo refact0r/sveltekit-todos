@@ -21,7 +21,7 @@
 				</picture>
 			</div>
 
-			to your new SvelteKit app
+			to SvelteKit Todos
 		</h1>
 	</div>
 {:else}
@@ -51,5 +51,7 @@
 		height: 100%;
 		top: 0;
 		display: block;
+		filter: saturate(0) invert(77%) sepia(38%) saturate(246%) hue-rotate(156deg) brightness(86%)
+			contrast(89%);
 	}
 </style>
