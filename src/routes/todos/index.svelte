@@ -13,11 +13,11 @@
 </script>
 
 <script>
-	import About from '../about.svelte'
-
 	export let todos
 	export let user
 	let text = ''
+
+	$: completed = todos.filter((todo) => todo.completed)
 
 	async function loadTodos() {
 		const res = await fetch(`/todos/${user.uid}.json`)
@@ -51,8 +51,12 @@
 		loadTodos()
 	}
 
-	async function editTodo(todo, name) {
-		todo.name = name
+	async function editTodo(todo, e) {
+		if (e.target.value == '') {
+			e.target.value = todo.name
+			return
+		}
+		todo.name = e.target.value
 		await fetch(`/todos/${user.uid}.json`, {
 			method: 'PUT',
 			body: JSON.stringify(todo)
@@ -66,6 +70,12 @@
 			body: JSON.stringify(todo)
 		})
 		loadTodos()
+	}
+
+	function blurOnEnter(event) {
+		if (event.keyCode === 13) {
+			event.target.blur()
+		}
 	}
 </script>
 
@@ -92,7 +102,8 @@
 							class="name"
 							type="text"
 							value={todo.name}
-							on:change={(e) => editTodo(todo, e.target.value)}
+							on:change={(e) => editTodo(todo, e)}
+							on:keydown={(e) => blurOnEnter(e)}
 						/>
 						<button class="delete" on:click={deleteTodo(todo)}
 							><i class="bi bi-x-lg" /></button
@@ -100,9 +111,9 @@
 					</div>
 				{/if}
 			{/each}
-			<h2>Completed</h2>
-			{#each todos as todo}
-				{#if todo.completed}
+			{#if completed.length > 0}
+				<h2>Completed</h2>
+				{#each completed as todo}
 					<div class="todo completed">
 						<button
 							class={todo.completed ? 'checkbox checked' : 'checkbox'}
@@ -114,14 +125,15 @@
 							class="name"
 							type="text"
 							value={todo.name}
-							on:change={(e) => editTodo(todo, e.target.value)}
+							on:change={(e) => editTodo(todo, e)}
+							on:keydown={(e) => blurOnEnter(e)}
 						/>
 						<button class="delete" on:click={deleteTodo(todo)}
 							><i class="bi bi-x-lg" /></button
 						>
 					</div>
-				{/if}
-			{/each}
+				{/each}
+			{/if}
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addTodo}>
