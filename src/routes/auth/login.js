@@ -29,6 +29,7 @@ export const post = async ({ body }) => {
 
 	const cookieId = uuid()
 
+	/*
 	// Look for existing email to avoid duplicate entries
 	const duplicateUser = await db.collection('cookies').findOne({ uid: user._id })
 
@@ -40,12 +41,14 @@ export const post = async ({ body }) => {
 	} else {
 		await db.collection('cookies').insertOne({ cookieId: cookieId, uid: user._id })
 	}
+	*/
+	await db.collection('cookies').insertOne({ cookieId: cookieId, uid: user._id })
 
 	// Set cookie
 	const headers = {
 		'Set-Cookie': cookie.serialize('session_id', cookieId, {
 			httpOnly: true,
-			maxAge: 60 * 60 * 24 * 7,
+			maxAge: 60 * 60 * 24 * 30,
 			sameSite: 'strict',
 			path: '/'
 		})
