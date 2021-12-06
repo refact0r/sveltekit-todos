@@ -15,6 +15,7 @@
 
 * {
 	box-sizing: border-box;
+	scrollbar-width: thin;
 }
 
 body {
@@ -22,6 +23,7 @@ body {
 	margin: 0;
 	background: var(--bg-color-2);
 	color: var(--font-color);
+	overflow: hidden;
 }
 
 #svelte {

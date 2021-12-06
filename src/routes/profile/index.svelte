@@ -52,6 +52,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Profile</title>
+</svelte:head>
+
 <div class="content">
 	<h1>Profile</h1>
 	<p>Hello {name} you are logged in with the email {email}</p>
