@@ -156,7 +156,6 @@
 		flex-direction: column;
 		overflow-y: scroll;
 		scrollbar-color: var(--bg-color-1-5) transparent;
-		scrollbar-width: thin;
 		height: 100%;
 	}
 

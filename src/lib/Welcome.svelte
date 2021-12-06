@@ -8,7 +8,6 @@
 
 <style>
 	section {
-		background: var(--bg-color-1);
 		width: 100%;
 		height: 100vh;
 		display: flex;

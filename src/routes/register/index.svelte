@@ -52,6 +52,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Register</title>
+</svelte:head>
+
 <section>
 	<form on:submit|preventDefault={register}>
 		<div class="heading">
@@ -75,7 +79,6 @@
 
 <style>
 	section {
-		background: var(--bg-color-1);
 		width: 100%;
 		height: 100vh;
 		display: flex;
