@@ -10,7 +10,7 @@
 	import '../app.css'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
-	import Nav from '$lib/Nav/Nav.svelte'
+	import Nav from '$lib/Nav.svelte'
 	export let key
 </script>
 
