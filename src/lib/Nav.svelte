@@ -1,11 +1,10 @@
 <script>
 	import { page } from '$app/stores'
-	import logo from './svelte-logo.svg'
 </script>
 
 <nav>
 	<div class="header" href="/">
-		<img src={logo} alt="SvelteKit" />
+		<img src="svelte-logo.svg" alt="SvelteKit" />
 		<h1>Todos</h1>
 	</div>
 	<a class:active={$page.path === '/'} sveltekit:prefetch href="/">Home</a>
