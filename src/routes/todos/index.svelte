@@ -17,7 +17,7 @@
 	export let user
 	let text = ''
 
-	$: completed = todos.filter((todo) => todo.completed)
+	$: console.log(todos)
 
 	async function loadTodos() {
 		const res = await fetch(`/todos/${user.uid}.json`)
@@ -42,13 +42,12 @@
 		loadTodos()
 	}
 
-	async function completeTodo(todo) {
-		todo.completed = !todo.completed
+	async function completeTodo(index) {
+		todos[index].completed = !todos[index].completed
 		await fetch(`/todos/${user.uid}.json`, {
 			method: 'PUT',
-			body: JSON.stringify(todo)
+			body: JSON.stringify(todos[index])
 		})
-		loadTodos()
 	}
 
 	async function editTodo(todo, e) {
@@ -64,12 +63,13 @@
 		loadTodos()
 	}
 
-	async function deleteTodo(todo) {
+	async function deleteTodo(index) {
+		const todo = todos.splice(index, 1)[0]
+		todos = todos
 		await fetch(`/todos/${user.uid}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
-		loadTodos()
 	}
 
 	function blurOnEnter(event) {
@@ -89,12 +89,12 @@
 			<h1>Todos</h1>
 		</div>
 		<div class="list">
-			{#each todos as todo}
+			{#each todos as todo, index}
 				{#if !todo.completed}
 					<div class="todo">
 						<button
 							class={todo.completed ? 'checkbox checked' : 'checkbox'}
-							on:click={() => completeTodo(todo)}
+							on:click={() => completeTodo(index)}
 						>
 							<i class="bi bi-check-lg" />
 						</button>
@@ -105,19 +105,21 @@
 							on:change={(e) => editTodo(todo, e)}
 							on:keydown={(e) => blurOnEnter(e)}
 						/>
-						<button class="delete" on:click={deleteTodo(todo)}
+						<button class="delete" on:click={() => deleteTodo(index)}
 							><i class="bi bi-x-lg" /></button
 						>
 					</div>
 				{/if}
 			{/each}
-			{#if completed.length > 0}
+			{#if todos.find((todo) => todo.completed)}
 				<h2>Completed</h2>
-				{#each completed as todo}
+			{/if}
+			{#each todos as todo, index}
+				{#if todo.completed}
 					<div class="todo completed">
 						<button
 							class={todo.completed ? 'checkbox checked' : 'checkbox'}
-							on:click={() => completeTodo(todo)}
+							on:click={() => completeTodo(index)}
 						>
 							<i class="bi bi-check-lg" />
 						</button>
@@ -128,12 +130,12 @@
 							on:change={(e) => editTodo(todo, e)}
 							on:keydown={(e) => blurOnEnter(e)}
 						/>
-						<button class="delete" on:click={deleteTodo(todo)}
+						<button class="delete" on:click={() => deleteTodo(index)}
 							><i class="bi bi-x-lg" /></button
 						>
 					</div>
-				{/each}
-			{/if}
+				{/if}
+			{/each}
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addTodo}>
