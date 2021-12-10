@@ -7,7 +7,7 @@ Simple todo app made with [Sveltekit](https://kit.svelte.dev/) and Mongodb Cloud
 
 My goal behind making this was to familiarize myself with Mongodb and the structure of a fullstack Sveltekit application.
 
-Based off of these tutorials:
+Based off of these tutorials by Brayden Girard:
 
 https://www.youtube.com/watch?v=P6gEnVlJPOc<br>
 https://www.youtube.com/watch?v=bG7cxwBMVag
