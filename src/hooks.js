@@ -4,6 +4,7 @@ import clientPromise from '$lib/db'
 // Sets context in endpoints
 // Try console logging context in your endpoints' HTTP methods to understand the structure
 export const handle = async ({ request, resolve }) => {
+	console.log('handle')
 	// Connecting to DB
 	// All database code can only run inside async functions as it uses await
 
@@ -43,6 +44,6 @@ export const handle = async ({ request, resolve }) => {
 // try console logging session in routes' load({ session }) functions
 export const getSession = async (request) => {
 	// Pass cookie with authenticated & email properties to session
-	console.log(request.locals.user)
+	console.log('getSession')
 	return { user: request.locals.user }
 }
