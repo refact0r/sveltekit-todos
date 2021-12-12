@@ -1,5 +1,5 @@
 <script context="module">
-	export async function load({ page, fetch, session }) {
+	export async function load({ page }) {
 		return {
 			props: {
 				key: page.path
@@ -16,18 +16,30 @@
 	import Nav from '$lib/Nav.svelte'
 	export let key
 
-	async function loadTodos(uid) {
-		const res = await fetch(`/todos/${uid}.json`)
+	async function loadTodos() {
+		const res = await fetch(`/todos/${$session.user.uid}.json`)
 		const json = await res.json()
 		todos.set(json.todos)
 	}
 
-	$: if ($session.user) {
-		console.log('user')
-		loadTodos($session.user.uid)
+	async function loadUser() {
+		const res = await fetch('/user')
+		const user = await res.json()
+		$session.user = {
+			uid: user._id,
+			name: user.name,
+			email: user.email
+		}
 	}
 
-	$: console.log($todos)
+	$: if ($session.user) {
+		loadTodos()
+		if (!$session.user.name) {
+			loadUser()
+		}
+	}
+
+	$: console.log($session)
 </script>
 
 {#if $session.user}
