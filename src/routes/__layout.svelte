@@ -1,17 +1,33 @@
 <script context="module">
-	export const load = async ({ page }) => ({
-		props: {
-			key: page.path
+	export async function load({ page, fetch, session }) {
+		return {
+			props: {
+				key: page.path
+			}
 		}
-	})
+	}
 </script>
 
 <script>
 	import '../app.css'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
+	import { todos } from '$lib/stores.js'
 	import Nav from '$lib/Nav.svelte'
 	export let key
+
+	async function loadTodos(uid) {
+		const res = await fetch(`/todos/${uid}.json`)
+		const json = await res.json()
+		todos.set(json.todos)
+	}
+
+	$: if ($session.user) {
+		console.log('user')
+		loadTodos($session.user.uid)
+	}
+
+	$: console.log($todos)
 </script>
 
 {#if $session.user}
