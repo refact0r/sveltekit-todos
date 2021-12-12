@@ -6,21 +6,25 @@
 				redirect: '/login'
 			}
 		}
-		return {}
+		const res = await fetch(`/todos/${session.user.uid}.json`)
+		const json = await res.json()
+		return { props: { todos: json.todos } }
 	}
 </script>
 
 <script>
 	import { session } from '$app/stores'
-	import { todos } from '$lib/stores.js'
+	export let todos
 
-	let user = $session.user
 	let text = ''
+	let user = $session.user
+
+	$: console.log(todos)
 
 	async function loadTodos() {
 		const res = await fetch(`/todos/${user.uid}.json`)
 		const json = await res.json()
-		todos.set(json.todos)
+		todos = json.todos
 	}
 
 	async function addTodo() {
@@ -41,10 +45,10 @@
 	}
 
 	async function completeTodo(index) {
-		$todos[index].completed = !$todos[index].completed
+		todos[index].completed = !todos[index].completed
 		await fetch(`/todos/${user.uid}.json`, {
 			method: 'PUT',
-			body: JSON.stringify($todos[index])
+			body: JSON.stringify(todos[index])
 		})
 	}
 
@@ -62,8 +66,8 @@
 	}
 
 	async function deleteTodo(index) {
-		const todo = $todos.splice(index, 1)[0]
-		todos.set($todos)
+		const todo = todos.splice(index, 1)[0]
+		todos = todos
 		await fetch(`/todos/${user.uid}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
@@ -87,55 +91,53 @@
 			<h1>Todos</h1>
 		</div>
 		<div class="list">
-			{#if $todos}
-				{#each $todos as todo, index}
-					{#if !todo.completed}
-						<div class="todo">
-							<button
-								class={todo.completed ? 'checkbox checked' : 'checkbox'}
-								on:click={() => completeTodo(index)}
-							>
-								<i class="bi bi-check-lg" />
-							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
-							<button class="delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" /></button
-							>
-						</div>
-					{/if}
-				{/each}
-				{#if $todos.find((todo) => todo.completed)}
-					<h2>Completed</h2>
+			{#each todos as todo, index}
+				{#if !todo.completed}
+					<div class="todo">
+						<button
+							class={todo.completed ? 'checkbox checked' : 'checkbox'}
+							on:click={() => completeTodo(index)}
+						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<input
+							class="name"
+							type="text"
+							value={todo.name}
+							on:change={(e) => editTodo(todo, e)}
+							on:keydown={(e) => blurOnEnter(e)}
+						/>
+						<button class="delete" on:click={() => deleteTodo(index)}
+							><i class="bi bi-x-lg" /></button
+						>
+					</div>
 				{/if}
-				{#each $todos as todo, index}
-					{#if todo.completed}
-						<div class="todo completed">
-							<button
-								class={todo.completed ? 'checkbox checked' : 'checkbox'}
-								on:click={() => completeTodo(index)}
-							>
-								<i class="bi bi-check-lg" />
-							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
-							<button class="delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" /></button
-							>
-						</div>
-					{/if}
-				{/each}
+			{/each}
+			{#if todos.find((todo) => todo.completed)}
+				<h2>Completed</h2>
 			{/if}
+			{#each todos as todo, index}
+				{#if todo.completed}
+					<div class="todo completed">
+						<button
+							class={todo.completed ? 'checkbox checked' : 'checkbox'}
+							on:click={() => completeTodo(index)}
+						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<input
+							class="name"
+							type="text"
+							value={todo.name}
+							on:change={(e) => editTodo(todo, e)}
+							on:keydown={(e) => blurOnEnter(e)}
+						/>
+						<button class="delete" on:click={() => deleteTodo(index)}
+							><i class="bi bi-x-lg" /></button
+						>
+					</div>
+				{/if}
+			{/each}
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addTodo}>
