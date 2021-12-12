@@ -6,23 +6,7 @@
 				redirect: '/login'
 			}
 		}
-
-		if (!session.user.name) {
-			const res = await fetch('/user')
-			const user = await res.json()
-			session.user = {
-				uid: user._id,
-				name: user.name,
-				email: user.email
-			}
-		}
-
-		return {
-			props: {
-				name: session.user.name,
-				email: session.user.email
-			}
-		}
+		return {}
 	}
 </script>
 
@@ -30,9 +14,6 @@
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
-
-	export let email
-	export let name
 	/*
 	let name
 
@@ -58,7 +39,9 @@
 
 <div class="content">
 	<h1>Profile</h1>
-	<p>Hello {name} you are logged in with the email {email}</p>
+	{#if $session.user && $session.user.name}
+		<p>Hello {$session.user.name} you are logged in with the email {$session.user.email}</p>
+	{/if}
 	<button on:click={logout}>log out</button>
 </div>
 
