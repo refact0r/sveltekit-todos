@@ -1,5 +1,6 @@
 <script context="module">
 	export async function load({ page, session }) {
+		console.log(session)
 		return {
 			props: {
 				key: page.path
