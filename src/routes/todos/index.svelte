@@ -12,7 +12,7 @@
 
 <script>
 	import { session } from '$app/stores'
-	import { todos } from '$lib/stores.js'
+	import { todos } from '$lib/todos.js'
 
 	let user = $session.user
 	let text = ''
