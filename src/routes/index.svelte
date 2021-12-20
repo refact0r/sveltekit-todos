@@ -12,16 +12,11 @@
 
 {#if $session.user}
 	<div class="content">
-		<h1>
-			<div class="welcome">
-				<picture>
-					<source srcset="svelte-welcome.webp" type="image/webp" />
-					<img src="svelte-welcome.png" alt="Welcome" />
-				</picture>
-			</div>
-
-			to SvelteKit Todos
-		</h1>
+		{#if $session.user.name}
+			<h1>
+				Welcome to SvelteKit Todos, {$session.user.name}
+			</h1>
+		{/if}
 	</div>
 {:else}
 	<Welcome />
