@@ -31,7 +31,7 @@
 		width: 100%;
 		text-align: center;
 	}
-
+	/* 
 	.welcome {
 		position: relative;
 		width: 100%;
@@ -47,5 +47,5 @@
 		display: block;
 		filter: saturate(0) invert(77%) sepia(38%) saturate(246%) hue-rotate(156deg) brightness(86%)
 			contrast(89%);
-	}
+	} */
 </style>

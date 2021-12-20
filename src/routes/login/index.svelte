@@ -13,6 +13,7 @@
 <script>
 	import { session } from '$app/stores'
 	import { goto } from '$app/navigation'
+	import { loadTodos } from '$lib/todos.js'
 
 	// Variables bound to respective inputs via bind:value
 	let email
@@ -39,6 +40,7 @@
 			if (res.ok) {
 				const data = await res.json()
 				$session.user = data.user
+				// loadTodos($session.user.uid)
 				goto('/')
 			} else {
 				error = 'An error occured'

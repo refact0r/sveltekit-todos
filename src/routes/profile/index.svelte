@@ -14,6 +14,7 @@
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
+	import { todos } from '$lib/todos.js'
 	/*
 	let name
 
@@ -29,6 +30,7 @@
 			method: 'POST'
 		})
 		$session.user = null
+		$todos = null
 		goto('/')
 	}
 </script>

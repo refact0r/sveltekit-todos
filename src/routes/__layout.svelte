@@ -12,41 +12,33 @@
 	import '../app.css'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
-	import { todos } from '$lib/stores.js'
+	import { todos, loadTodos } from '$lib/todos.js'
 	import Nav from '$lib/Nav.svelte'
 	export let key
-
-	async function loadAll() {
-		console.log('loadAll')
-		loadUser()
-		loadTodos()
-	}
-
-	async function loadTodos() {
-		console.log('loadTodos')
-		try {
-			const res = await fetch(`/todos/${$session.user.uid}.json`)
-			const json = await res.json()
-			todos.set(json.todos)
-		} catch (e) {
-			console.log(e)
-		}
-	}
 
 	async function loadUser() {
 		console.log('loadUser')
 		try {
 			const res = await fetch('/user')
 			const user = await res.json()
-			$session.user.name = user.name
-			$session.user.email = user.email
+			$session.user = {
+				uid: user.uid,
+				name: user.name,
+				email: user.email
+			}
 		} catch (e) {
 			console.log(e)
 		}
 	}
 
-	$: if (!$session.user.name) {
-		loadAll()
+	$: if ($session.user && !$session.user.name) {
+		loadUser()
+	}
+
+	$: if (!$todos) {
+		if ($session.user && $session.user.uid) {
+			loadTodos($session.user.uid)
+		}
 	}
 </script>
 
