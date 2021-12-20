@@ -24,17 +24,25 @@
 
 	async function loadTodos() {
 		console.log('loadTodos')
-		const res = await fetch(`/todos/${$session.user.uid}.json`)
-		const json = await res.json()
-		todos.set(json.todos)
+		try {
+			const res = await fetch(`/todos/${$session.user.uid}.json`)
+			const json = await res.json()
+			todos.set(json.todos)
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
 	async function loadUser() {
 		console.log('loadUser')
-		const res = await fetch('/user')
-		const user = await res.json()
-		$session.user.name = user.name
-		$session.user.email = user.email
+		try {
+			const res = await fetch('/user')
+			const user = await res.json()
+			$session.user.name = user.name
+			$session.user.email = user.email
+		} catch (e) {
+			console.log(e)
+		}
 	}
 
 	$: if (!$session.user.name) {
