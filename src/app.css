@@ -2,7 +2,6 @@
 	font-family: 'Outfit';
 	font-weight: 300;
 	font-size: 112.5%;
-	flex-shrink: 0;
 	--bg-color-1: hsl(200, 17%, 9%);
 	--bg-color-1-5: hsl(200, 17%, 10.5%);
 	--bg-color-2: hsl(200, 17%, 12%);
@@ -59,6 +58,10 @@ button {
 	color: inherit;
 	font: inherit;
 	border: none;
+}
+
+button {
+	flex-shrink: 0;
 }
 
 button:hover {

@@ -12,16 +12,10 @@
 
 <script>
 	import { session } from '$app/stores'
-	import { todos } from '$lib/todos.js'
+	import { todos, loadTodos } from '$lib/todos.js'
 
 	let user = $session.user
 	let text = ''
-
-	async function loadTodos() {
-		const res = await fetch(`/todos/${user.uid}.json`)
-		const json = await res.json()
-		todos.set(json.todos)
-	}
 
 	async function addTodo() {
 		if (text == '') {
@@ -37,7 +31,7 @@
 			body: JSON.stringify(todo)
 		})
 		text = ''
-		loadTodos()
+		loadTodos($session.user.uid)
 	}
 
 	async function completeTodo(index) {
@@ -58,7 +52,7 @@
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
-		loadTodos()
+		loadTodos($session.user.uid)
 	}
 
 	async function deleteTodo(index) {
@@ -85,6 +79,9 @@
 	<div class="list-container">
 		<div class="heading-container">
 			<h1>Todos</h1>
+			<button class="sync" on:click={() => loadTodos($session.user.uid)}
+				><i class="bi bi-arrow-repeat" /></button
+			>
 		</div>
 		<div class="list">
 			{#if $todos}
@@ -166,10 +163,11 @@
 	}
 
 	button {
-		background: var(--bg-color-2);
+		background: transparent;
 	}
 
 	input {
+		width: 100%;
 		background: var(--bg-color-2);
 		padding: 0;
 	}
@@ -211,10 +209,9 @@
 	}
 
 	.delete {
-		margin-left: auto;
-		width: 20px;
-		height: 20px;
-		flex-shrink: 0;
+		margin-left: 10px;
+		width: 24px;
+		height: 24px;
 		padding: 0;
 		color: var(--sub-color);
 	}
@@ -236,10 +233,13 @@
 		width: 100%;
 		padding: 20px 40px 10px 40px;
 		border-radius: 18px;
+		display: flex;
+		align-items: center;
 	}
 
 	h1 {
 		margin: 0;
+		margin-right: auto;
 	}
 
 	.new-container {
@@ -264,8 +264,8 @@
 	}
 
 	.add {
-		width: 20px;
-		height: 20px;
+		width: 24px;
+		height: 24px;
 		padding: 0;
 		margin-right: 10px;
 		font-size: 20px;
@@ -274,5 +274,19 @@
 	}
 	.add:hover {
 		color: var(--font-color);
+	}
+
+	.sync {
+		width: 36px;
+		height: 36px;
+		background: var(--bg-color-2);
+		border-radius: 10px;
+	}
+	.sync:hover {
+		background-color: var(--bg-color-2-5);
+	}
+
+	.sync i {
+		font-size: 20px;
 	}
 </style>

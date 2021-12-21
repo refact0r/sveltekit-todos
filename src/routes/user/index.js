@@ -27,7 +27,6 @@ export const get = async (context) => {
 		}
 	}
 
-	// Find a proper way in findOne(), I've run out of gas ;)
 	delete user.password
 
 	return {
