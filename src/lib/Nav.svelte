@@ -26,7 +26,7 @@
 		text-decoration: none;
 		padding: 10px;
 		margin: 3px 0;
-		border-radius: 10px;
+		border-radius: 12px;
 	}
 	a:hover {
 		background: var(--bg-color-2-5);
