@@ -29,7 +29,7 @@
 			body: JSON.stringify(todo)
 		})
 		text = ''
-		loadTodos($session.user._id)
+		loadTodos()
 	}
 
 	async function completeTodo(index) {
