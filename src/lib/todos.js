@@ -2,10 +2,10 @@ import { writable } from 'svelte/store'
 
 export let todos = writable()
 
-export async function loadTodos(uid) {
+export async function loadTodos(userId) {
 	console.log('loadTodos')
 	try {
-		const res = await fetch(`/todos/${uid}.json`)
+		const res = await fetch(`/todos/${userId}.json`)
 		const json = await res.json()
 		todos.set(json.todos)
 	} catch (e) {

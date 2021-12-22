@@ -12,18 +12,18 @@ export const handle = async ({ request, resolve }) => {
 	const cookies = cookie.parse(request.headers.cookie || '')
 
 	// If there are no cookies, the user is not authenticated
-	if (cookies.session_id) {
+	if (cookies.sessionId) {
 		// Searching DB for the user with the right cookie
 		// All database code can only run inside async functions as it uses await
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const cookie = await db.collection('cookies').findOne({ cookieId: cookies.session_id })
+		const cookie = await db.collection('cookies').findOne({ _id: cookies.sessionId })
 		console.log('getting cookie')
 
 		// If there is that user, authenticate him and pass his email to context
 		if (cookie) {
 			request.locals.user = {
-				uid: cookie.uid
+				_id: cookie.userId.toString()
 			}
 		}
 	}

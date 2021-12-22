@@ -6,11 +6,11 @@ export async function post(request) {
 		const cookies = cookie.parse(request.headers.cookie || '')
 		const client = await clientPromise
 		const db = client.db('Todos')
-		await db.collection('cookies').deleteOne({ cookieId: cookies.session_id })
+		await db.collection('cookies').deleteOne({ _id: cookies.sessionId })
 
 		return {
 			headers: {
-				'Set-cookie': cookie.serialize('session_id', '', {
+				'Set-cookie': cookie.serialize('sessionId', '', {
 					httpOnly: true,
 					sameSite: 'strict',
 					path: '/',

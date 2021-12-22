@@ -6,7 +6,7 @@ export async function get(request) {
 		const client = await clientPromise
 		const db = client.db('Todos')
 		const collection = db.collection('todos')
-		const todos = await collection.find({ uid: request.params.uid }).toArray()
+		const todos = await collection.find({ userId: ObjectId(request.params.userId) }).toArray()
 
 		return {
 			status: 200,
@@ -34,7 +34,7 @@ export async function post(request) {
 		await collection.insertOne({
 			name: todo.name,
 			completed: false,
-			uid: request.params.uid
+			userId: ObjectId(request.params.userId)
 		})
 
 		return {

@@ -21,11 +21,7 @@
 		try {
 			const res = await fetch('/user')
 			const user = await res.json()
-			$session.user = {
-				uid: user._id,
-				name: user.name,
-				email: user.email
-			}
+			$session.user = user
 		} catch (e) {
 			console.log(e)
 		}
@@ -36,8 +32,8 @@
 	}
 
 	$: if (!$todos) {
-		if ($session.user && $session.user.uid) {
-			loadTodos($session.user.uid)
+		if ($session.user && $session.user._id) {
+			loadTodos($session.user._id)
 		}
 	}
 </script>

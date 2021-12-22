@@ -1,6 +1,7 @@
 import stringHash from 'string-hash'
 import * as cookie from 'cookie'
 import { v4 as uuid } from 'uuid'
+import { ObjectId } from 'mongodb'
 import clientPromise from '$lib/db'
 
 export const post = async ({ body }) => {
@@ -25,27 +26,27 @@ export const post = async ({ body }) => {
 
 	// Add user to DB
 	// All database code can only run inside async functions as it uses await
-	const uid = uuid()
-	await db.collection('users').insertOne({
-		_id: uid,
+	const result = await db.collection('users').insertOne({
 		name: body.name,
 		email: body.email,
 		password: stringHash(body.password)
 	})
 
+	result._id = result.insertedId
+	delete result.insertedId
+	delete result.password
+
 	// Add cookie with user's email to DB
 	// All database code can only run inside async functions as it uses await
 	const cookieId = uuid()
 	await db.collection('cookies').insertOne({
-		cookieId: cookieId,
-		uid: uid
+		_id: cookieId,
+		userId: ObjectId(result._id)
 	})
 
 	// Set cookie
-	// If you want cookies to be passed alongside user when they redirect to another website using a link, change sameSite to 'lax'
-	// If you don't want cookies to be valid everywhere in your app, modify the path property accordingly
 	const headers = {
-		'Set-Cookie': cookie.serialize('session_id', cookieId, {
+		'Set-Cookie': cookie.serialize('sessionId', cookieId, {
 			httpOnly: true,
 			maxAge: 60 * 60 * 24 * 7,
 			sameSite: 'strict',
@@ -57,11 +58,7 @@ export const post = async ({ body }) => {
 		status: 200,
 		headers,
 		body: {
-			user: {
-				uid: uid,
-				name: body.name,
-				email: body.email
-			}
+			user: result
 		}
 	}
 }
