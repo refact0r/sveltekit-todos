@@ -21,7 +21,11 @@
 		try {
 			const res = await fetch('/user')
 			const user = await res.json()
-			$session.user = user
+			$session.user = {
+				uid: user._id,
+				name: user.name,
+				email: user.email
+			}
 		} catch (e) {
 			console.log(e)
 		}

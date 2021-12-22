@@ -42,7 +42,6 @@
 			if (res.ok) {
 				const data = await res.json()
 				$session.user = data.user
-				loadTodos($session.user.uid)
 				goto('/')
 			} else {
 				error = 'An error occured'

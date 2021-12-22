@@ -13,9 +13,9 @@
 <script>
 	import { session } from '$app/stores'
 	import { todos, loadTodos } from '$lib/todos.js'
-
-	let user = $session.user
 	let text = ''
+
+	$: console.log($session)
 
 	async function addTodo() {
 		if (text == '') {
@@ -26,17 +26,17 @@
 			completed: false
 		}
 		console.log(todo)
-		await fetch(`/todos/${user.uid}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'POST',
 			body: JSON.stringify(todo)
 		})
 		text = ''
-		loadTodos($session.user.uid)
+		loadTodos()
 	}
 
 	async function completeTodo(index) {
 		$todos[index].completed = !$todos[index].completed
-		await fetch(`/todos/${user.uid}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'PUT',
 			body: JSON.stringify($todos[index])
 		})
@@ -48,7 +48,7 @@
 			return
 		}
 		todo.name = e.target.value
-		await fetch(`/todos/${user.uid}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
@@ -58,7 +58,7 @@
 	async function deleteTodo(index) {
 		const todo = $todos.splice(index, 1)[0]
 		todos.set($todos)
-		await fetch(`/todos/${user.uid}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
@@ -178,7 +178,7 @@
 		align-items: center;
 		border-radius: 12px;
 		padding: 10px;
-		margin-bottom: 6px;
+		margin-bottom: 8px;
 	}
 	.todo.completed .name {
 		text-decoration: line-through;
