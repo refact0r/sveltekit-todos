@@ -14,7 +14,7 @@
 	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
-	import { todos } from '$lib/todos.js'
+	import { todos } from '$lib/stores/todos.js'
 	/*
 	let name
 

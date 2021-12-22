@@ -12,53 +12,44 @@
 
 <script>
 	import { session } from '$app/stores'
-	import { todos, loadTodos } from '$lib/todos.js'
+	import { lists, loadLists } from '$lib/stores/lists.js'
 	let text = ''
 
-	async function addTodo() {
+	async function addList() {
 		if (text == '') {
 			return
 		}
-		const todo = {
-			name: text,
-			completed: false
+		const list = {
+			name: text
 		}
-		console.log(todo)
-		await fetch(`/todos/${$session.user._id}.json`, {
+		console.log(list)
+		await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'POST',
-			body: JSON.stringify(todo)
+			body: JSON.stringify(list)
 		})
 		text = ''
-		loadTodos()
+		loadLists($session.user._id)
 	}
 
-	async function completeTodo(index) {
-		$todos[index].completed = !$todos[index].completed
-		await fetch(`/todos/${$session.user._id}.json`, {
-			method: 'PUT',
-			body: JSON.stringify($todos[index])
-		})
-	}
-
-	async function editTodo(todo, e) {
+	async function editList(list, e) {
 		if (e.target.value == '') {
-			e.target.value = todo.name
+			e.target.value = list.name
 			return
 		}
-		todo.name = e.target.value
-		await fetch(`/todos/${$session.user._id}.json`, {
+		list.name = e.target.value
+		await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'PUT',
-			body: JSON.stringify(todo)
+			body: JSON.stringify(list)
 		})
-		loadTodos($session.user._id)
+		loadLists($session.user._id)
 	}
 
-	async function deleteTodo(index) {
-		const todo = $todos.splice(index, 1)[0]
-		todos.set($todos)
-		await fetch(`/todos/${$session.user._id}.json`, {
+	async function deleteList(index) {
+		const list = $lists.splice(index, 1)[0]
+		lists.set($lists)
+		await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'DELETE',
-			body: JSON.stringify(todo)
+			body: JSON.stringify(list)
 		})
 	}
 
@@ -70,72 +61,39 @@
 </script>
 
 <svelte:head>
-	<title>Todos</title>
+	<title>Lists</title>
 </svelte:head>
 
 <div class="content">
-	<div class="list-container">
+	<div class="scroll-container">
 		<div class="heading-container">
-			<h1>Todos</h1>
-			<button class="sync" on:click={() => loadTodos($session.user._id)}
+			<h1>Lists</h1>
+			<button class="sync" on:click={() => loadLists($session.user._id)}
 				><i class="bi bi-arrow-repeat" /></button
 			>
 		</div>
-		<div class="list">
-			{#if $todos}
-				{#each $todos as todo, index}
-					{#if !todo.completed}
-						<div class="todo">
-							<button
-								class={todo.completed ? 'checkbox checked' : 'checkbox'}
-								on:click={() => completeTodo(index)}
-							>
-								<i class="bi bi-check-lg" />
-							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
-							<button class="delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" /></button
-							>
-						</div>
-					{/if}
-				{/each}
-				{#if $todos.find((todo) => todo.completed)}
-					<h2>Completed</h2>
-				{/if}
-				{#each $todos as todo, index}
-					{#if todo.completed}
-						<div class="todo completed">
-							<button
-								class={todo.completed ? 'checkbox checked' : 'checkbox'}
-								on:click={() => completeTodo(index)}
-							>
-								<i class="bi bi-check-lg" />
-							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
-							<button class="delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" /></button
-							>
-						</div>
-					{/if}
+		<div class="list-container">
+			{#if $lists}
+				{#each $lists as list, index}
+					<div class="list">
+						<input
+							class="name"
+							type="text"
+							value={list.name}
+							on:change={(e) => editList(list, e)}
+							on:keydown={(e) => blurOnEnter(e)}
+						/>
+						<button class="delete" on:click={() => deleteList(index)}
+							><i class="bi bi-x-lg" /></button
+						>
+					</div>
 				{/each}
 			{/if}
 		</div>
 		<div class="new-container">
-			<form class="new" on:submit|preventDefault={addTodo}>
+			<form class="new" on:submit|preventDefault={addList}>
 				<button class="add" type="submit"><i class="bi bi-plus-lg" /></button>
-				<input class="name" type="text" placeholder="Add a todo" bind:value={text} />
+				<input class="name" type="text" placeholder="Add a list" bind:value={text} />
 			</form>
 		</div>
 	</div>
@@ -148,7 +106,7 @@
 		padding: 20px 0;
 	}
 
-	.list-container {
+	.scroll-container {
 		display: flex;
 		flex-direction: column;
 		overflow-y: scroll;
@@ -156,7 +114,7 @@
 		height: 100%;
 	}
 
-	.list {
+	.list-container {
 		padding: 10px 40px 88px 40px;
 	}
 
@@ -170,40 +128,13 @@
 		padding: 0;
 	}
 
-	.todo {
+	.list {
 		display: flex;
 		background: var(--bg-color-2);
 		align-items: center;
 		border-radius: 12px;
 		padding: 10px;
 		margin-bottom: 8px;
-	}
-	.todo.completed .name {
-		text-decoration: line-through;
-		color: var(--sub-color);
-	}
-	.todo.completed .checkbox i {
-		display: block;
-	}
-
-	.checkbox {
-		width: 20px;
-		height: 20px;
-		border-radius: 6px;
-		padding: 0;
-		margin-right: 10px;
-		background: var(--bg-color-3);
-		line-height: 20px;
-	}
-	.checkbox:hover {
-		background: var(--bg-color-3-5);
-	}
-	.checkbox:active {
-		background: var(--font-color);
-	}
-	.checkbox i {
-		display: none;
-		margin-right: 2px;
 	}
 
 	.delete {

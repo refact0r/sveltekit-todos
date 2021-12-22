@@ -57,11 +57,11 @@ export async function put(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('todos')
-		const todo = JSON.parse(request.body)
+		const collection = db.collection('lists')
+		const list = JSON.parse(request.body)
 		await collection.updateOne(
-			{ _id: ObjectId(todo._id) },
-			{ $set: { name: todo.name, completed: todo.completed } }
+			{ _id: ObjectId(list._id) },
+			{ $set: { name: list.name } }
 		)
 
 		return {
@@ -85,9 +85,9 @@ export async function del(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('todos')
-		const todo = JSON.parse(request.body)
-		await collection.deleteOne({ _id: ObjectId(todo._id) })
+		const collection = db.collection('lists')
+		const list = JSON.parse(request.body)
+		await collection.deleteOne({ _id: ObjectId(list._id) })
 
 		return {
 			status: 200,

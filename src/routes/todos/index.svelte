@@ -12,7 +12,7 @@
 
 <script>
 	import { session } from '$app/stores'
-	import { todos, loadTodos } from '$lib/todos.js'
+	import { todos, loadTodos } from '$lib/stores/todos.js'
 	let text = ''
 
 	async function addTodo() {

@@ -12,7 +12,8 @@
 	import '../app.css'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
-	import { todos, loadTodos } from '$lib/todos.js'
+	import { loadTodos } from '$lib/stores/todos.js'
+	import { loadLists } from '$lib/stores/lists.js'
 	import Nav from '$lib/Nav.svelte'
 	export let key
 
@@ -29,12 +30,8 @@
 
 	$: if ($session.user && !$session.user.name) {
 		loadUser()
-	}
-
-	$: if (!$todos) {
-		if ($session.user && $session.user._id) {
-			loadTodos($session.user._id)
-		}
+		loadTodos($session.user._id)
+		loadLists($session.user._id)
 	}
 </script>
 
