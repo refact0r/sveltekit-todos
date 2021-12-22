@@ -1,17 +1,17 @@
-import clientPromise from '$lib/db'
+import clientPromise from '$lib/db
 import { ObjectId } from 'mongodb'
 
 export async function get(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('lists')
-		const lists = await collection.find({ userId: ObjectId(request.params.userId) }).toArray()
+		const collection = db.collection('todos')
+		const todos = await collection.find({ uid: request.params.uid }).toArray()
 
 		return {
 			status: 200,
 			body: {
-				lists
+				todos
 			}
 		}
 	} catch (err) {
@@ -29,11 +29,12 @@ export async function post(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('lists')
-		const list = JSON.parse(request.body)
+		const collection = db.collection('todos')
+		const todo = JSON.parse(request.body)
 		await collection.insertOne({
-			name: list.name,
-			userId: ObjectId(request.params.userId)
+			name: todo.name,
+			completed: false,
+			uid: request.params.uid
 		})
 
 		return {
@@ -57,11 +58,11 @@ export async function put(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('lists')
-		const list = JSON.parse(request.body)
+		const collection = db.collection('todos')
+		const todo = JSON.parse(request.body)
 		await collection.updateOne(
-			{ _id: ObjectId(list._id) },
-			{ $set: { name: list.name } }
+			{ _id: ObjectId(todo._id) },
+			{ $set: { name: todo.name, completed: todo.completed } }
 		)
 
 		return {
@@ -85,9 +86,9 @@ export async function del(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('lists')
-		const list = JSON.parse(request.body)
-		await collection.deleteOne({ _id: ObjectId(list._id) })
+		const collection = db.collection('todos')
+		const todo = JSON.parse(request.body)
+		await collection.deleteOne({ _id: ObjectId(todo._id) })
 
 		return {
 			status: 200,

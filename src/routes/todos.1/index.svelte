@@ -24,17 +24,17 @@
 			completed: false
 		}
 		console.log(todo)
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'POST',
 			body: JSON.stringify(todo)
 		})
 		text = ''
-		loadTodos($session.user._id)
+		loadTodos()
 	}
 
 	async function completeTodo(index) {
 		$todos[index].completed = !$todos[index].completed
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'PUT',
 			body: JSON.stringify($todos[index])
 		})
@@ -46,17 +46,17 @@
 			return
 		}
 		todo.name = e.target.value
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
-		loadTodos($session.user._id)
+		loadTodos($session.user.uid)
 	}
 
 	async function deleteTodo(index) {
 		const todo = $todos.splice(index, 1)[0]
 		todos.set($todos)
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos/${$session.user.uid}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
@@ -77,7 +77,7 @@
 	<div class="list-container">
 		<div class="heading-container">
 			<h1>Todos</h1>
-			<button class="sync" on:click={() => loadTodos($session.user._id)}
+			<button class="sync" on:click={() => loadTodos($session.user.uid)}
 				><i class="bi bi-arrow-repeat" /></button
 			>
 		</div>
