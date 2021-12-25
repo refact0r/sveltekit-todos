@@ -12,32 +12,23 @@
 	import '../app.css'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
-	import { loadTodos } from '$lib/stores/todos.js'
+	import { todos, loadTodos } from '$lib/stores/todos.js'
 	import { loadLists } from '$lib/stores/lists.js'
-	import Nav from '$lib/Nav.svelte'
+	import Nav from '$lib/nav/Nav.svelte'
+	import { onMount } from 'svelte'
+
 	export let key
 
-	async function loadUser() {
-		console.log('loadUser')
-		try {
-			const res = await fetch('/user')
-			const user = await res.json()
-			$session.user = user
-		} catch (e) {
-			console.log(e)
-		}
-	}
-
-	$: if ($session.user && !$session.user.name) {
-		loadUser()
-		loadTodos($session.user._id)
+	onMount(async () => {
+		console.log('mount')
 		loadLists($session.user._id)
-	}
+		loadTodos($session.user._id)
+	})
 </script>
 
 {#if $session.user}
 	<Nav />
-	<main class="with-nav">
+	<main>
 		{#key key}
 			<div
 				class="content-container"

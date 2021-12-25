@@ -1,16 +1,28 @@
 <script>
 	import { page } from '$app/stores'
+	import { lists } from '$lib/stores/lists.js'
+	import logo from './svelte-logo.svg'
 </script>
 
 <nav>
 	<div class="header" href="/">
-		<img src="svelte-logo.svg" alt="SvelteKit" />
+		<img src={logo} alt="SvelteKit" />
 		<h1>Todos</h1>
 	</div>
 	<a class:active={$page.path === '/'} sveltekit:prefetch href="/">Home</a>
 	<a class:active={$page.path === '/todos'} sveltekit:prefetch href="/todos">Todos</a>
 	<a class:active={$page.path === '/lists'} sveltekit:prefetch href="/lists">Lists</a>
 	<a class:active={$page.path === '/profile'} sveltekit:prefetch href="/profile">Profile</a>
+	<hr />
+	{#if $lists}
+		{#each $lists as list}
+			<a
+				class:active={$page.path === `/lists/${list._id}`}
+				sveltekit:prefetch
+				href={`/lists/${list._id}`}>{list.name}</a
+			>
+		{/each}
+	{/if}
 </nav>
 
 <style>
@@ -31,6 +43,13 @@
 	}
 	a:hover {
 		background: var(--bg-color-2-5);
+	}
+
+	hr {
+		width: calc(100% - 20px);
+		height: 2px;
+		background: var(--bg-color-2-5);
+		border: none;
 	}
 
 	.header {

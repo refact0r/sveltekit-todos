@@ -1,5 +1,6 @@
 import cookie from 'cookie'
 import clientPromise from '$lib/db'
+import { ObjectId } from 'mongodb'
 
 // Sets context in endpoints
 // Try console logging context in your endpoints' HTTP methods to understand the structure
@@ -43,7 +44,11 @@ export const handle = async ({ request, resolve }) => {
 // Sets session on client-side
 // try console logging session in routes' load({ session }) functions
 export const getSession = async (request) => {
-	// Pass cookie with authenticated & email properties to session
 	console.log('getSession')
-	return { user: request.locals.user }
+
+	const client = await clientPromise
+	const db = client.db('Todos')
+	const user = await db.collection('users').findOne({ _id: ObjectId(request.locals.user._id) })
+	user._id = user._id.toString()
+	return { user: user }
 }

@@ -34,7 +34,8 @@ export async function post(request) {
 		await collection.insertOne({
 			name: todo.name,
 			completed: false,
-			userId: ObjectId(request.params.userId)
+			userId: ObjectId(request.params.userId),
+			listId: ObjectId(todo.listId)
 		})
 
 		return {
