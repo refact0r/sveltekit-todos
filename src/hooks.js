@@ -43,12 +43,15 @@ export const handle = async ({ request, resolve }) => {
 
 // Sets session on client-side
 // try console logging session in routes' load({ session }) functions
-export const getSession = async ({ locals }) => {
+export const getSession = async (request) => {
 	console.log('getSession')
-
-	const client = await clientPromise
-	const db = client.db('Todos')
-	const user = await db.collection('users').findOne({ _id: ObjectId(locals.user._id) })
-	user._id = user._id.toString()
-	return { user: user }
+	if (request.locals.user) {
+		const client = await clientPromise
+		const db = client.db('Todos')
+		request.locals.user = await db
+			.collection('users')
+			.findOne({ _id: ObjectId(request.locals.user._id) })
+		request.locals.user._id = request.locals.user._id.toString()
+	}
+	return { user: request.locals.user }
 }
