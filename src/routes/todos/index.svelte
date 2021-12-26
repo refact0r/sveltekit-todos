@@ -21,7 +21,8 @@
 		}
 		const todo = {
 			name: text,
-			completed: false
+			completed: false,
+			listId: null
 		}
 		console.log(todo)
 		await fetch(`/todos/${$session.user._id}.json`, {
@@ -50,7 +51,6 @@
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
-		loadTodos($session.user._id)
 	}
 
 	async function deleteTodo(index) {

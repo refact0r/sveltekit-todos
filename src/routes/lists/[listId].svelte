@@ -22,9 +22,14 @@
 	export let listId
 	let text = ''
 	let listTodos
+	let list
 
 	$: if ($todos) {
 		listTodos = $todos.filter((todo) => todo.listId === listId)
+	}
+
+	$: if ($lists) {
+		list = $lists.find((list) => list._id === listId)
 	}
 
 	async function addTodo() {
@@ -63,7 +68,6 @@
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
-		loadTodos($session.user._id)
 	}
 
 	async function deleteTodo(index) {
@@ -72,6 +76,18 @@
 		await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
+		})
+	}
+
+	async function editList(list, e) {
+		if (e.target.value == '') {
+			e.target.value = list.name
+			return
+		}
+		list.name = e.target.value
+		await fetch(`/lists/${$session.user._id}.json`, {
+			method: 'PUT',
+			body: JSON.stringify(list)
 		})
 	}
 
@@ -89,7 +105,13 @@
 <div class="content">
 	<div class="list-container">
 		<div class="heading-container">
-			<h1>Todos</h1>
+			<input
+				class="list-name"
+				type="text"
+				value={list ? list.name : ''}
+				on:change={(e) => editList(list, e)}
+				on:keydown={(e) => blurOnEnter(e)}
+			/>
 			<button class="sync" on:click={() => loadTodos($session.user._id)}
 				><i class="bi bi-arrow-repeat" /></button
 			>
@@ -248,8 +270,10 @@
 		align-items: center;
 	}
 
-	h1 {
-		margin: 0;
+	.list-name {
+		font-size: 2em;
+		font-weight: bold;
+		background: none;
 		margin-right: auto;
 	}
 
