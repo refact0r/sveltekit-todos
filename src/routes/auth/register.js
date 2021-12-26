@@ -1,7 +1,6 @@
 import stringHash from 'string-hash'
 import * as cookie from 'cookie'
 import { v4 as uuid } from 'uuid'
-import { ObjectId } from 'mongodb'
 import clientPromise from '$lib/db'
 
 export const post = async ({ body }) => {
@@ -26,27 +25,27 @@ export const post = async ({ body }) => {
 
 	// Add user to DB
 	// All database code can only run inside async functions as it uses await
+	const userId = uuid()
 	const result = await db.collection('users').insertOne({
+		_id: userId,
 		name: body.name,
 		email: body.email,
 		password: stringHash(body.password)
 	})
 
-	result._id = result.insertedId
-	delete result.insertedId
 	delete result.password
 
 	// Add cookie with user's email to DB
 	// All database code can only run inside async functions as it uses await
-	const cookieId = uuid()
+	const sessionId = uuid()
 	await db.collection('cookies').insertOne({
-		_id: cookieId,
-		userId: ObjectId(result._id)
+		_id: sessionId,
+		userId: userId
 	})
 
 	// Set cookie
 	const headers = {
-		'Set-Cookie': cookie.serialize('sessionId', cookieId, {
+		'Set-Cookie': cookie.serialize('sessionId', sessionId, {
 			httpOnly: true,
 			maxAge: 60 * 60 * 24 * 7,
 			sameSite: 'strict',

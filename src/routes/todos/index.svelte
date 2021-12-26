@@ -22,7 +22,7 @@
 		const todo = {
 			name: text,
 			completed: false,
-			listId: null
+			listId: ''
 		}
 		console.log(todo)
 		await fetch(`/todos/${$session.user._id}.json`, {
@@ -93,14 +93,18 @@
 							>
 								<i class="bi bi-check-lg" />
 							</button>
-							<div />
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
+							<div class="text">
+								<input
+									class="name"
+									type="text"
+									value={todo.name}
+									on:change={(e) => editTodo(todo, e)}
+									on:keydown={(e) => blurOnEnter(e)}
+								/>
+								{#if todo.listId}
+									<div class="list-name">{todo.listId}</div>
+								{/if}
+							</div>
 							<button class="icon-button delete" on:click={() => deleteTodo(index)}
 								><i class="bi bi-x-lg" /></button
 							>
@@ -181,13 +185,6 @@
 		padding: 10px 40px 88px 40px;
 	}
 
-	input {
-		width: 100%;
-		background: var(--bg-color-2);
-		padding: 0;
-		line-height: 24px;
-	}
-
 	.todo {
 		display: flex;
 		background: var(--bg-color-2);
@@ -219,6 +216,22 @@
 		display: none;
 		color: var(--font-color);
 		margin-right: 2px !important;
+	}
+
+	.text {
+		width: 100%;
+	}
+
+	input {
+		width: 100%;
+		background: transparent;
+		padding: 0;
+		line-height: 24px;
+	}
+
+	.list-name {
+		font-size: 0.75em;
+		color: var(--sub-color);
 	}
 
 	.delete {

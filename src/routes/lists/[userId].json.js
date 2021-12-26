@@ -1,12 +1,12 @@
 import clientPromise from '$lib/db'
-import { ObjectId } from 'mongodb'
+import { v4 as uuid } from 'uuid'
 
 export async function get(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
 		const collection = db.collection('lists')
-		const lists = await collection.find({ userId: ObjectId(request.params.userId) }).toArray()
+		const lists = await collection.find({ userId: request.params.userId }).toArray()
 
 		return {
 			status: 200,
@@ -31,9 +31,11 @@ export async function post(request) {
 		const db = client.db('Todos')
 		const collection = db.collection('lists')
 		const list = JSON.parse(request.body)
+		const listId = uuid()
 		await collection.insertOne({
+			_id: listId,
 			name: list.name,
-			userId: ObjectId(request.params.userId)
+			userId: request.params.userId
 		})
 
 		return {
@@ -59,10 +61,7 @@ export async function put(request) {
 		const db = client.db('Todos')
 		const collection = db.collection('lists')
 		const list = JSON.parse(request.body)
-		await collection.updateOne(
-			{ _id: ObjectId(list._id) },
-			{ $set: { name: list.name } }
-		)
+		await collection.updateOne({ _id: list._id }, { $set: { name: list.name } })
 
 		return {
 			status: 200,
@@ -87,7 +86,7 @@ export async function del(request) {
 		const db = client.db('Todos')
 		const collection = db.collection('lists')
 		const list = JSON.parse(request.body)
-		await collection.deleteOne({ _id: ObjectId(list._id) })
+		await collection.deleteOne({ _id: list._id })
 
 		return {
 			status: 200,
