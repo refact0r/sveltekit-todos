@@ -29,7 +29,7 @@
 
 	h1 {
 		width: 100%;
-		text-align: center;
+		margin-top: 0;
 	}
 	/* 
 	.welcome {
