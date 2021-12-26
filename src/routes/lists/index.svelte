@@ -83,7 +83,7 @@
 							on:change={(e) => editList(list, e)}
 							on:keydown={(e) => blurOnEnter(e)}
 						/>
-						<button class="delete" on:click={() => deleteList(index)}
+						<button class="icon-button delete" on:click={() => deleteList(index)}
 							><i class="bi bi-x-lg" /></button
 						>
 					</div>
@@ -92,7 +92,7 @@
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addList}>
-				<button class="add" type="submit"><i class="bi bi-plus-lg" /></button>
+				<button class="icon-button add" type="submit"><i class="bi bi-plus-lg" /></button>
 				<input class="name" type="text" placeholder="Add a list" bind:value={text} />
 			</form>
 		</div>
@@ -114,47 +114,6 @@
 		height: 100%;
 	}
 
-	.list-container {
-		padding: 10px 40px 88px 40px;
-	}
-
-	button {
-		background: transparent;
-	}
-
-	input {
-		width: 100%;
-		background: var(--bg-color-2);
-		padding: 0;
-	}
-
-	.list {
-		display: flex;
-		background: var(--bg-color-2);
-		align-items: center;
-		border-radius: 12px;
-		padding: 10px;
-		margin-bottom: 8px;
-	}
-
-	.delete {
-		margin-left: 10px;
-		width: 24px;
-		height: 24px;
-		padding: 0;
-		color: var(--sub-color);
-	}
-	.delete:hover {
-		color: var(--font-color);
-	}
-
-	.name {
-		background: none;
-	}
-	.name:focus {
-		outline: none;
-	}
-
 	.heading-container {
 		background: var(--bg-color-1);
 		position: sticky;
@@ -169,6 +128,37 @@
 	h1 {
 		margin: 0;
 		margin-right: auto;
+	}
+
+	.list-container {
+		padding: 10px 40px 88px 40px;
+	}
+
+	input {
+		width: 100%;
+		background: var(--bg-color-2);
+		padding: 0;
+		line-height: 24px;
+	}
+
+	.list {
+		display: flex;
+		background: var(--bg-color-2);
+		align-items: center;
+		border-radius: 12px;
+		padding: 10px 12px;
+		margin-bottom: 8px;
+	}
+
+	.delete {
+		margin-left: 10px;
+	}
+
+	.name {
+		background: none;
+	}
+	.name:focus {
+		outline: none;
 	}
 
 	.new-container {
@@ -186,23 +176,17 @@
 		background: var(--bg-color-2);
 		align-items: center;
 		border-radius: 12px;
-		padding: 10px;
+		padding: 10px 12px;
 	}
 	.new .name {
 		width: 100%;
 	}
 
 	.add {
-		width: 24px;
-		height: 24px;
 		padding: 0;
 		margin-right: 10px;
 		font-size: 20px;
 		line-height: 20px;
-		color: var(--sub-color);
-	}
-	.add:hover {
-		color: var(--font-color);
 	}
 
 	.sync {
@@ -214,7 +198,6 @@
 	.sync:hover {
 		background-color: var(--bg-color-2-5);
 	}
-
 	.sync i {
 		font-size: 20px;
 	}

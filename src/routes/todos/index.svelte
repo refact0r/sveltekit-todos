@@ -74,7 +74,7 @@
 </svelte:head>
 
 <div class="content">
-	<div class="list-container">
+	<div class="scroll-container">
 		<div class="heading-container">
 			<h1>Todos</h1>
 			<button class="sync" on:click={() => loadTodos($session.user._id)}
@@ -87,11 +87,13 @@
 					{#if !todo.completed}
 						<div class="todo">
 							<button
-								class={todo.completed ? 'checkbox checked' : 'checkbox'}
+								class={'icon-button ' +
+									(todo.completed ? 'checkbox checked' : 'checkbox')}
 								on:click={() => completeTodo(index)}
 							>
 								<i class="bi bi-check-lg" />
 							</button>
+							<div />
 							<input
 								class="name"
 								type="text"
@@ -99,7 +101,7 @@
 								on:change={(e) => editTodo(todo, e)}
 								on:keydown={(e) => blurOnEnter(e)}
 							/>
-							<button class="delete" on:click={() => deleteTodo(index)}
+							<button class="icon-button delete" on:click={() => deleteTodo(index)}
 								><i class="bi bi-x-lg" /></button
 							>
 						</div>
@@ -112,7 +114,8 @@
 					{#if todo.completed}
 						<div class="todo completed">
 							<button
-								class={todo.completed ? 'checkbox checked' : 'checkbox'}
+								class={'icon-button ' +
+									(todo.completed ? 'checkbox checked' : 'checkbox')}
 								on:click={() => completeTodo(index)}
 							>
 								<i class="bi bi-check-lg" />
@@ -124,9 +127,9 @@
 								on:change={(e) => editTodo(todo, e)}
 								on:keydown={(e) => blurOnEnter(e)}
 							/>
-							<button class="delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" /></button
-							>
+							<button class="icon-button delete" on:click={() => deleteTodo(index)}
+								><i class="bi bi-x-lg" />
+							</button>
 						</div>
 					{/if}
 				{/each}
@@ -134,7 +137,9 @@
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addTodo}>
-				<button class="add" type="submit"><i class="bi bi-plus-lg" /></button>
+				<button class="icon-button add" type="submit">
+					<i class="bi bi-plus-lg" />
+				</button>
 				<input class="name" type="text" placeholder="Add a todo" bind:value={text} />
 			</form>
 		</div>
@@ -148,80 +153,12 @@
 		padding: 20px 0;
 	}
 
-	.list-container {
+	.scroll-container {
 		display: flex;
 		flex-direction: column;
 		overflow-y: scroll;
 		scrollbar-color: var(--bg-color-1-5) transparent;
 		height: 100%;
-	}
-
-	.list {
-		padding: 10px 40px 88px 40px;
-	}
-
-	button {
-		background: transparent;
-	}
-
-	input {
-		width: 100%;
-		background: var(--bg-color-2);
-		padding: 0;
-	}
-
-	.todo {
-		display: flex;
-		background: var(--bg-color-2);
-		align-items: center;
-		border-radius: 12px;
-		padding: 10px;
-		margin-bottom: 8px;
-	}
-	.todo.completed .name {
-		text-decoration: line-through;
-		color: var(--sub-color);
-	}
-	.todo.completed .checkbox i {
-		display: block;
-	}
-
-	.checkbox {
-		width: 20px;
-		height: 20px;
-		border-radius: 6px;
-		padding: 0;
-		margin-right: 10px;
-		background: var(--bg-color-3);
-		line-height: 20px;
-	}
-	.checkbox:hover {
-		background: var(--bg-color-3-5);
-	}
-	.checkbox:active {
-		background: var(--font-color);
-	}
-	.checkbox i {
-		display: none;
-		margin-right: 2px;
-	}
-
-	.delete {
-		margin-left: 10px;
-		width: 24px;
-		height: 24px;
-		padding: 0;
-		color: var(--sub-color);
-	}
-	.delete:hover {
-		color: var(--font-color);
-	}
-
-	.name {
-		background: none;
-	}
-	.name:focus {
-		outline: none;
 	}
 
 	.heading-container {
@@ -240,6 +177,61 @@
 		margin-right: auto;
 	}
 
+	.list {
+		padding: 10px 40px 88px 40px;
+	}
+
+	input {
+		width: 100%;
+		background: var(--bg-color-2);
+		padding: 0;
+		line-height: 24px;
+	}
+
+	.todo {
+		display: flex;
+		background: var(--bg-color-2);
+		align-items: center;
+		border-radius: 12px;
+		padding: 10px 12px;
+		margin-bottom: 8px;
+	}
+	.todo.completed .name {
+		text-decoration: line-through;
+		color: var(--sub-color);
+	}
+	.todo.completed .checkbox i {
+		display: inline-block;
+	}
+
+	.checkbox {
+		border-radius: 6px;
+		margin-right: 10px;
+		background: var(--bg-color-3);
+	}
+	.checkbox:hover {
+		background: var(--bg-color-3-5);
+	}
+	.checkbox:active {
+		background: var(--font-color);
+	}
+	.checkbox i {
+		display: none;
+		color: var(--font-color);
+		margin-right: 2px !important;
+	}
+
+	.delete {
+		margin-left: 10px;
+	}
+
+	.name {
+		background: none;
+	}
+	.name:focus {
+		outline: none;
+	}
+
 	.new-container {
 		margin-top: auto;
 		background: var(--bg-color-1);
@@ -255,23 +247,17 @@
 		background: var(--bg-color-2);
 		align-items: center;
 		border-radius: 12px;
-		padding: 10px;
+		padding: 10px 12px;
 	}
 	.new .name {
 		width: 100%;
 	}
 
 	.add {
-		width: 24px;
-		height: 24px;
 		padding: 0;
 		margin-right: 10px;
 		font-size: 20px;
 		line-height: 20px;
-		color: var(--sub-color);
-	}
-	.add:hover {
-		color: var(--font-color);
 	}
 
 	.sync {
@@ -283,7 +269,6 @@
 	.sync:hover {
 		background-color: var(--bg-color-2-5);
 	}
-
 	.sync i {
 		font-size: 20px;
 	}
