@@ -37,12 +37,12 @@
 		if (text == '') {
 			return
 		}
-		text = ''
 		const todo = {
 			name: text,
 			completed: false,
 			listId: listId
 		}
+		text = ''
 		console.log(todo)
 		await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'POST',
