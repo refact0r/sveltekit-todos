@@ -84,9 +84,9 @@ export async function del(request) {
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('lists')
 		const list = JSON.parse(request.body)
-		await collection.deleteOne({ _id: list._id })
+		await db.collection('lists').deleteOne({ _id: list._id })
+		await db.collection('todos').deleteMany({ listId: list._id })
 
 		return {
 			status: 200,

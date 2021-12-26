@@ -84,3 +84,17 @@ button:hover {
 	text-align: center;
 	margin: auto;
 }
+
+.icon-button-lg {
+	width: 36px;
+	height: 36px;
+	background: var(--bg-color-2);
+	border-radius: 10px;
+	margin-left: 10px;
+}
+.icon-button-lg:hover {
+	background-color: var(--bg-color-2-5);
+}
+.icon-button-lg i {
+	font-size: 20px;
+}

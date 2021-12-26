@@ -13,6 +13,7 @@
 <script>
 	import { session } from '$app/stores'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
+	import { lists } from '$lib/stores/lists.js'
 	let text = ''
 
 	async function addTodo() {
@@ -55,7 +56,7 @@
 
 	async function deleteTodo(index) {
 		const todo = $todos.splice(index, 1)[0]
-		todos.set($todos)
+		$todos = $todos
 		await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
@@ -77,9 +78,9 @@
 	<div class="scroll-container">
 		<div class="heading-container">
 			<h1>Todos</h1>
-			<button class="sync" on:click={() => loadTodos($session.user._id)}
-				><i class="bi bi-arrow-repeat" /></button
-			>
+			<button class="icon-button-lg sync" on:click={() => loadTodos($session.user._id)}
+				><i class="bi bi-arrow-repeat" />
+			</button>
 		</div>
 		<div class="list">
 			{#if $todos}
@@ -101,13 +102,18 @@
 									on:change={(e) => editTodo(todo, e)}
 									on:keydown={(e) => blurOnEnter(e)}
 								/>
-								{#if todo.listId}
-									<div class="list-name">{todo.listId}</div>
+								{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
+									<a
+										class="list-name"
+										sveltekit:prefetch
+										href="/lists/{todo.listId}"
+										>{$lists.find((list) => todo.listId === list._id).name}</a
+									>
 								{/if}
 							</div>
 							<button class="icon-button delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" /></button
-							>
+								><i class="bi bi-x-lg" />
+							</button>
 						</div>
 					{/if}
 				{/each}
@@ -220,6 +226,8 @@
 
 	.text {
 		width: 100%;
+		display: flex;
+		flex-direction: column;
 	}
 
 	input {
@@ -230,8 +238,10 @@
 	}
 
 	.list-name {
-		font-size: 0.75em;
+		font-size: 0.8em;
 		color: var(--sub-color);
+		text-decoration: none;
+		width: fit-content;
 	}
 
 	.delete {
@@ -267,22 +277,7 @@
 	}
 
 	.add {
-		padding: 0;
 		margin-right: 12px;
-		font-size: 20px;
-		line-height: 20px;
-	}
-
-	.sync {
-		width: 36px;
-		height: 36px;
-		background: var(--bg-color-2);
-		border-radius: 10px;
-	}
-	.sync:hover {
-		background-color: var(--bg-color-2-5);
-	}
-	.sync i {
 		font-size: 20px;
 	}
 </style>

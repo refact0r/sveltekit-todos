@@ -15,6 +15,7 @@
 </script>
 
 <script>
+	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
 	import { lists } from '$lib/stores/lists.js'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
@@ -22,14 +23,14 @@
 	export let listId
 	let text = ''
 	let listTodos
-	let list
+	let listIndex
 
 	$: if ($todos) {
 		listTodos = $todos.filter((todo) => todo.listId === listId)
 	}
 
 	$: if ($lists) {
-		list = $lists.find((list) => list._id === listId)
+		listIndex = $lists.findIndex((list) => list._id === listId)
 	}
 
 	async function addTodo() {
@@ -72,23 +73,38 @@
 
 	async function deleteTodo(index) {
 		const todo = $todos.splice(index, 1)[0]
-		todos.set($todos)
+		$todos = $todos
 		await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
 	}
 
-	async function editList(list, e) {
+	async function editList(e) {
 		if (e.target.value == '') {
-			e.target.value = list.name
+			e.target.value = $lists[listIndex].name
 			return
 		}
-		list.name = e.target.value
+		$lists[listIndex].name = e.target.value
 		await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'PUT',
+			body: JSON.stringify($lists[listIndex])
+		})
+	}
+
+	async function deleteList() {
+		if (listIndex === 0) {
+			goto('/todos')
+		} else {
+			goto(`/lists/${$lists[listIndex - 1]._id}`)
+		}
+		const list = $lists.splice(listIndex, 1)[0]
+		$lists = $lists
+		await fetch(`/lists/${$session.user._id}.json`, {
+			method: 'DELETE',
 			body: JSON.stringify(list)
 		})
+		loadTodos($session.user._id)
 	}
 
 	function blurOnEnter(event) {
@@ -108,13 +124,16 @@
 			<input
 				class="list-name"
 				type="text"
-				value={list ? list.name : ''}
-				on:change={(e) => editList(list, e)}
+				value={$lists && $lists[listIndex] ? $lists[listIndex].name : ''}
+				on:change={(e) => editList(e)}
 				on:keydown={(e) => blurOnEnter(e)}
 			/>
-			<button class="sync" on:click={() => loadTodos($session.user._id)}
-				><i class="bi bi-arrow-repeat" /></button
-			>
+			<button class="icon-button-lg delete-list" on:click={() => deleteList()}>
+				<i class="bi bi-trash" />
+			</button>
+			<button class="icon-button-lg sync" on:click={() => loadTodos($session.user._id)}>
+				<i class="bi bi-arrow-repeat" />
+			</button>
 		</div>
 		<div class="list">
 			{#if listTodos}
@@ -296,16 +315,7 @@
 		line-height: 20px;
 	}
 
-	.sync {
-		width: 36px;
-		height: 36px;
-		background: var(--bg-color-2);
-		border-radius: 10px;
-	}
-	.sync:hover {
-		background-color: var(--bg-color-2-5);
-	}
-	.sync i {
-		font-size: 20px;
+	.delete-list i {
+		font-size: 1rem;
 	}
 </style>
