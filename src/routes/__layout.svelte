@@ -21,8 +21,10 @@
 
 	onMount(async () => {
 		console.log('mount')
-		loadLists($session.user._id)
-		loadTodos($session.user._id)
+		if ($session.user) {
+			loadLists($session.user._id)
+			loadTodos($session.user._id)
+		}
 	})
 </script>
 
