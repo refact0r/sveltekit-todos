@@ -44,6 +44,9 @@
 	a:hover {
 		background: var(--bg-color-2-5);
 	}
+	a.active {
+		background: var(--bg-color-2-5);
+	}
 
 	hr {
 		width: calc(100% - 20px);
