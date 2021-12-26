@@ -11,6 +11,7 @@
 </script>
 
 <script>
+	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
 	import { lists, loadLists } from '$lib/stores/lists.js'
 	let text = ''
@@ -76,6 +77,11 @@
 			{#if $lists}
 				{#each $lists as list, index}
 					<div class="list">
+						<button
+							class="icon-button goto"
+							on:click={() => goto(`/lists/${$lists[index]._id}`)}
+							><i class="bi bi-list" />
+						</button>
 						<input
 							class="name"
 							type="text"
@@ -134,6 +140,10 @@
 
 	.list-container {
 		padding: 10px 40px 88px 40px;
+	}
+
+	.goto {
+		margin-right: 12px;
 	}
 
 	input {

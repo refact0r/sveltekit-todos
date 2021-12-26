@@ -243,39 +243,6 @@
 		line-height: 24px;
 	}
 
-	.todo {
-		display: flex;
-		background: var(--bg-color-2);
-		align-items: center;
-		border-radius: 12px;
-		padding: 10px 12px;
-		margin-bottom: 8px;
-	}
-	.todo.completed .name {
-		text-decoration: line-through;
-		color: var(--sub-color);
-	}
-	.todo.completed .checkbox i {
-		display: inline-block;
-	}
-
-	.checkbox {
-		border-radius: 6px;
-		margin-right: 12px;
-		background: var(--bg-color-3);
-	}
-	.checkbox:hover {
-		background: var(--bg-color-3-5);
-	}
-	.checkbox:active {
-		background: var(--font-color);
-	}
-	.checkbox i {
-		display: none;
-		color: var(--font-color);
-		margin-right: 2px !important;
-	}
-
 	.delete {
 		margin-left: 10px;
 	}
