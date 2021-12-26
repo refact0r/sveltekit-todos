@@ -184,7 +184,7 @@
 
 	.add {
 		padding: 0;
-		margin-right: 10px;
+		margin-right: 12px;
 		font-size: 20px;
 		line-height: 20px;
 	}
