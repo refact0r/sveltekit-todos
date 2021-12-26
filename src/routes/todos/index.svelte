@@ -20,6 +20,7 @@
 		if (text == '') {
 			return
 		}
+		text = ''
 		const todo = {
 			name: text,
 			completed: false,
@@ -30,7 +31,6 @@
 			method: 'POST',
 			body: JSON.stringify(todo)
 		})
-		text = ''
 		loadTodos($session.user._id)
 	}
 
