@@ -1,6 +1,5 @@
 import cookie from 'cookie'
 import clientPromise from '$lib/db'
-import { ObjectId } from 'mongodb'
 
 // Sets context in endpoints
 // Try console logging context in your endpoints' HTTP methods to understand the structure
@@ -24,7 +23,7 @@ export const handle = async ({ request, resolve }) => {
 		// If there is that user, authenticate him and pass his email to context
 		if (cookie) {
 			request.locals.user = {
-				_id: cookie.userId.toString()
+				_id: cookie.userId
 			}
 		}
 	}
@@ -50,8 +49,7 @@ export const getSession = async (request) => {
 		const db = client.db('Todos')
 		request.locals.user = await db
 			.collection('users')
-			.findOne({ _id: ObjectId(request.locals.user._id) })
-		request.locals.user._id = request.locals.user._id.toString()
+			.findOne({ _id: request.locals.user._id })
 	}
 	return { user: request.locals.user }
 }

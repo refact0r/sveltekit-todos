@@ -1,5 +1,4 @@
 import clientPromise from '$lib/db'
-import { ObjectId } from 'mongodb'
 
 export const get = async (context) => {
 	const client = await clientPromise
@@ -14,7 +13,7 @@ export const get = async (context) => {
 		}
 	}	
 
-	const user = await db.collection('users').findOne({ _id: ObjectId(context.locals.user._id) })
+	const user = await db.collection('users').findOne({ _id: context.locals.user._id })
 
 	if (!user) {
 		return {
