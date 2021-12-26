@@ -68,9 +68,9 @@
 	<div class="scroll-container">
 		<div class="heading-container">
 			<h1>Lists</h1>
-			<button class="sync" on:click={() => loadLists($session.user._id)}
-				><i class="bi bi-arrow-repeat" /></button
-			>
+			<button class="icon-button-lg sync" on:click={() => loadLists($session.user._id)}
+				><i class="bi bi-arrow-repeat" />
+			</button>
 		</div>
 		<div class="list-container">
 			{#if $lists}
@@ -84,15 +84,17 @@
 							on:keydown={(e) => blurOnEnter(e)}
 						/>
 						<button class="icon-button delete" on:click={() => deleteList(index)}
-							><i class="bi bi-x-lg" /></button
-						>
+							><i class="bi bi-x-lg" />
+						</button>
 					</div>
 				{/each}
 			{/if}
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addList}>
-				<button class="icon-button add" type="submit"><i class="bi bi-plus-lg" /></button>
+				<button class="icon-button add" type="submit">
+					<i class="bi bi-plus-lg" />
+				</button>
 				<input class="name" type="text" placeholder="Add a list" bind:value={text} />
 			</form>
 		</div>
@@ -187,18 +189,5 @@
 		margin-right: 12px;
 		font-size: 20px;
 		line-height: 20px;
-	}
-
-	.sync {
-		width: 36px;
-		height: 36px;
-		background: var(--bg-color-2);
-		border-radius: 10px;
-	}
-	.sync:hover {
-		background-color: var(--bg-color-2-5);
-	}
-	.sync i {
-		font-size: 20px;
 	}
 </style>
