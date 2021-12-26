@@ -57,7 +57,11 @@ export const post = async ({ body }) => {
 		status: 200,
 		headers,
 		body: {
-			user: result
+			user: {
+				_id: userId,
+				name: body.name,
+				email: body.email
+			}
 		}
 	}
 }
