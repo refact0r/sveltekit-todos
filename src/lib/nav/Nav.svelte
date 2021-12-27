@@ -38,8 +38,8 @@
 			{/each}
 		{/if}
 	</div>
-	<div class="add-container">
-		<button class="add" on:click={() => addList()}>
+	<div class="add-list-container">
+		<button class="add-list" on:click={() => addList()}>
 			<i class="bi bi-plus-lg" />
 			New list
 		</button>
@@ -80,6 +80,7 @@
 		height: 2px;
 		background: var(--bg-color-2-5);
 		border: none;
+		flex-shrink: 0;
 	}
 
 	.logo {
@@ -104,12 +105,12 @@
 		font-size: 2rem;
 	}
 
-	.add-container {
+	.add-list-container {
 		display: flex;
 		margin-top: 10px;
 	}
 
-	.add {
+	.add-list {
 		display: flex;
 		align-items: center;
 		padding: 10px;
@@ -118,10 +119,10 @@
 		width: 100%;
 		flex-shrink: 1;
 	}
-	.add:hover {
+	.add-list:hover {
 		background: var(--bg-color-2-5);
 	}
-	.add i {
+	.add-list i {
 		margin-right: 10px;
 		font-size: 20px;
 	}
