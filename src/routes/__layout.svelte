@@ -60,7 +60,7 @@
 		background: var(--bg-color-1);
 		height: calc(100vh - 40px);
 		border-radius: 18px;
-		margin: 20px;
+		margin: 20px 20px 20px 0;
 	}
 
 	.content-container {
