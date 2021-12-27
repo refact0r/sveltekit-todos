@@ -10,17 +10,16 @@
 
 <script>
 	import '../app.css'
+	import { onMount } from 'svelte'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
 	import { loadLists } from '$lib/stores/lists.js'
 	import Nav from '$lib/nav/Nav.svelte'
-	import { onMount } from 'svelte'
 
 	export let key
 
 	onMount(async () => {
-		console.log('mount')
 		if ($session.user) {
 			loadLists($session.user._id)
 			loadTodos($session.user._id)
