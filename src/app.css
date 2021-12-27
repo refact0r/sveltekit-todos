@@ -33,13 +33,9 @@ body {
 ::-webkit-scrollbar {
 	width: 7.5px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
 	background: transparent;
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
 	background: var(--bg-color-1-5);
 }
@@ -130,4 +126,41 @@ button:hover {
 	display: none;
 	color: var(--font-color);
 	margin-right: 2px !important;
+}
+
+.scroll-container {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	scrollbar-color: var(--bg-color-1-5) transparent;
+	height: 100%;
+}
+
+.new-container {
+	margin-top: auto;
+	background: var(--bg-color-1);
+	padding: 10px 40px 20px 40px;
+	position: sticky;
+	bottom: 0;
+	width: 100%;
+	border-radius: 18px;
+}
+
+.new {
+	display: flex;
+	background: var(--bg-color-2);
+	align-items: center;
+	border-radius: 12px;
+	padding: 10px 12px;
+}
+.new .name {
+	width: 100%;
+}
+
+.add {
+	margin-right: 12px;
+	font-size: 20px;
+}
+.add.active {
+	color: var(--font-color);
 }

@@ -44,7 +44,7 @@
 	{#if $session.user && $session.user.name}
 		<p>Hello {$session.user.name} you are logged in with the email {$session.user.email}</p>
 	{/if}
-	<button on:click={logout}>log out</button>
+	<button on:click={logout}>Log out</button>
 </div>
 
 <style>

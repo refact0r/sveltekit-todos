@@ -1,28 +1,49 @@
 <script>
+	import { session } from '$app/stores'
 	import { page } from '$app/stores'
-	import { lists } from '$lib/stores/lists.js'
+	import { lists, loadLists } from '$lib/stores/lists.js'
 	import logo from './svelte-logo.svg'
+
+	async function addList() {
+		const list = {
+			name: 'New list'
+		}
+		console.log(list)
+		await fetch(`/lists/${$session.user._id}.json`, {
+			method: 'POST',
+			body: JSON.stringify(list)
+		})
+		loadLists($session.user._id)
+	}
 </script>
 
 <nav>
-	<div class="header" href="/">
+	<a class="logo" href="/">
 		<img src={logo} alt="SvelteKit" />
 		<h1>Todos</h1>
+	</a>
+	<div class="scroll-container">
+		<a class:active={$page.path === '/'} sveltekit:prefetch href="/">Home</a>
+		<a class:active={$page.path === '/todos'} sveltekit:prefetch href="/todos">Todos</a>
+		<a class:active={$page.path === '/lists'} sveltekit:prefetch href="/lists">Lists</a>
+		<a class:active={$page.path === '/profile'} sveltekit:prefetch href="/profile">Profile</a>
+		<hr />
+		{#if $lists}
+			{#each $lists as list}
+				<a
+					class:active={$page.path === `/lists/${list._id}`}
+					sveltekit:prefetch
+					href={`/lists/${list._id}`}>{list.name}</a
+				>
+			{/each}
+		{/if}
 	</div>
-	<a class:active={$page.path === '/'} sveltekit:prefetch href="/">Home</a>
-	<a class:active={$page.path === '/todos'} sveltekit:prefetch href="/todos">Todos</a>
-	<a class:active={$page.path === '/lists'} sveltekit:prefetch href="/lists">Lists</a>
-	<a class:active={$page.path === '/profile'} sveltekit:prefetch href="/profile">Profile</a>
-	<hr />
-	{#if $lists}
-		{#each $lists as list}
-			<a
-				class:active={$page.path === `/lists/${list._id}`}
-				sveltekit:prefetch
-				href={`/lists/${list._id}`}>{list.name}</a
-			>
-		{/each}
-	{/if}
+	<div class="add-container">
+		<button class="add" on:click={() => addList()}>
+			<i class="bi bi-plus-lg" />
+			New list
+		</button>
+	</div>
 </nav>
 
 <style>
@@ -32,6 +53,12 @@
 		width: 240px;
 		background: var(--bg-color-2);
 		padding: 20px 0 20px 20px;
+		height: 100vh;
+	}
+
+	.scroll-container {
+		padding-right: 20px;
+		scrollbar-color: var(--bg-color-2) transparent;
 	}
 
 	a {
@@ -55,13 +82,17 @@
 		border: none;
 	}
 
-	.header {
+	.logo {
 		display: flex;
 		align-items: center;
-		margin: 10px 0 20px 5px;
+		margin: 0 20px 0 0;
+	}
+	.logo:hover {
+		background: none;
 	}
 
-	.header img {
+	.logo img {
+		margin-left: -5px;
 		width: 32px;
 		height: 32px;
 		filter: saturate(0) brightness(0.6) contrast(2) invert(77%) sepia(38%) saturate(246%)
@@ -71,5 +102,27 @@
 	h1 {
 		margin: 0 0 0 12px;
 		font-size: 2rem;
+	}
+
+	.add-container {
+		display: flex;
+		margin-top: 10px;
+	}
+
+	.add {
+		display: flex;
+		align-items: center;
+		padding: 10px;
+		border-radius: 12px;
+		margin-right: 20px;
+		width: 100%;
+		flex-shrink: 1;
+	}
+	.add:hover {
+		background: var(--bg-color-2-5);
+	}
+	.add i {
+		margin-right: 10px;
+		font-size: 20px;
 	}
 </style>

@@ -23,12 +23,12 @@
 		const list = {
 			name: text
 		}
+		text = ''
 		console.log(list)
 		await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'POST',
 			body: JSON.stringify(list)
 		})
-		text = ''
 		loadLists($session.user._id)
 	}
 
@@ -98,7 +98,7 @@
 		</div>
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addList}>
-				<button class="icon-button add" type="submit">
+				<button class={'icon-button add' + (text ? ' active' : '')} type="submit">
 					<i class="bi bi-plus-lg" />
 				</button>
 				<input class="name" type="text" placeholder="Add a list" bind:value={text} />
@@ -112,14 +112,6 @@
 		position: relative;
 		height: 100%;
 		padding: 20px 0;
-	}
-
-	.scroll-container {
-		display: flex;
-		flex-direction: column;
-		overflow-y: scroll;
-		scrollbar-color: var(--bg-color-1-5) transparent;
-		height: 100%;
 	}
 
 	.heading-container {
@@ -171,33 +163,5 @@
 	}
 	.name:focus {
 		outline: none;
-	}
-
-	.new-container {
-		margin-top: auto;
-		background: var(--bg-color-1);
-		padding: 10px 40px 20px 40px;
-		position: sticky;
-		bottom: 0;
-		width: 100%;
-		border-radius: 18px;
-	}
-
-	.new {
-		display: flex;
-		background: var(--bg-color-2);
-		align-items: center;
-		border-radius: 12px;
-		padding: 10px 12px;
-	}
-	.new .name {
-		width: 100%;
-	}
-
-	.add {
-		padding: 0;
-		margin-right: 12px;
-		font-size: 20px;
-		line-height: 20px;
 	}
 </style>
