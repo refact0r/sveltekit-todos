@@ -15,6 +15,7 @@
 </script>
 
 <script>
+	import { onMount } from 'svelte'
 	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
 	import { lists } from '$lib/stores/lists.js'

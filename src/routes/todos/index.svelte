@@ -221,6 +221,9 @@
 		text-decoration: none;
 		width: fit-content;
 	}
+	.list-name:hover {
+		color: var(--font-color);
+	}
 
 	.delete {
 		margin-left: 10px;
