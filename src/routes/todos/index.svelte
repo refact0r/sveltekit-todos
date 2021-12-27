@@ -130,13 +130,23 @@
 							>
 								<i class="bi bi-check-lg" />
 							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
+							<div class="text">
+								<input
+									class="name"
+									type="text"
+									value={todo.name}
+									on:change={(e) => editTodo(todo, e)}
+									on:keydown={(e) => blurOnEnter(e)}
+								/>
+								{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
+									<a
+										class="list-name"
+										sveltekit:prefetch
+										href="/lists/{todo.listId}"
+										>{$lists.find((list) => todo.listId === list._id).name}</a
+									>
+								{/if}
+							</div>
 							<button class="icon-button delete" on:click={() => deleteTodo(index)}
 								><i class="bi bi-x-lg" />
 							</button>
@@ -205,7 +215,7 @@
 	}
 
 	.list-name {
-		font-size: 0.8em;
+		font-size: 0.75em;
 		color: var(--sub-color);
 		text-decoration: none;
 		width: fit-content;

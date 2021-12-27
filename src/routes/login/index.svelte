@@ -14,6 +14,7 @@
 	import { session } from '$app/stores'
 	import { goto } from '$app/navigation'
 	import { loadTodos } from '$lib/stores/todos.js'
+	import { loadLists } from '$lib/stores/lists.js'
 
 	// Variables bound to respective inputs via bind:value
 	let email
