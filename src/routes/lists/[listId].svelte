@@ -26,10 +26,6 @@
 	let listTodos
 	let listIndex
 
-	$: if ($todos) {
-		listTodos = $todos.filter((todo) => todo.listId === listId)
-	}
-
 	$: if ($lists) {
 		listIndex = $lists.findIndex((list) => list._id === listId)
 	}
@@ -137,9 +133,9 @@
 			</button>
 		</div>
 		<div class="list">
-			{#if listTodos}
-				{#each listTodos as todo, index}
-					{#if !todo.completed}
+			{#if $todos}
+				{#each $todos as todo, index}
+					{#if todo.listId === listId && !todo.completed}
 						<div class="todo">
 							<button
 								class={'icon-button ' +
@@ -161,11 +157,11 @@
 						</div>
 					{/if}
 				{/each}
-				{#if listTodos.find((todo) => todo.completed)}
+				{#if $todos.find((todo) => todo.listId === listId && todo.completed)}
 					<h2>Completed</h2>
 				{/if}
-				{#each listTodos as todo, index}
-					{#if todo.completed}
+				{#each $todos as todo, index}
+					{#if todo.listId === listId && todo.completed}
 						<div class="todo completed">
 							<button
 								class={'icon-button ' +
