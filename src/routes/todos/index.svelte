@@ -216,6 +216,7 @@
 
 	.list-name {
 		font-size: 0.75em;
+		line-height: 1em;
 		color: var(--sub-color);
 		text-decoration: none;
 		width: fit-content;
