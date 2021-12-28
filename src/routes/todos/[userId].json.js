@@ -43,7 +43,13 @@ export async function post(request) {
 		return {
 			status: 200,
 			body: {
-				status: 'Success'
+				todo: {
+					_id: todoId,
+					name: todo.name,
+					completed: false,
+					userId: request.params.userId,
+					listId: todo.listId
+				}
 			}
 		}
 	} catch (err) {
@@ -69,10 +75,7 @@ export async function put(request) {
 		)
 
 		return {
-			status: 200,
-			body: {
-				status: 'Success'
-			}
+			status: 200
 		}
 	} catch (err) {
 		console.log(err)
@@ -94,10 +97,7 @@ export async function del(request) {
 		await collection.deleteOne({ _id: todo._id })
 
 		return {
-			status: 200,
-			body: {
-				status: 'Success'
-			}
+			status: 200
 		}
 	} catch (err) {
 		console.log(err)
