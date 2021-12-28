@@ -25,11 +25,13 @@
 		}
 		text = ''
 		console.log(list)
-		await fetch(`/lists/${$session.user._id}.json`, {
+		const res = await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'POST',
 			body: JSON.stringify(list)
 		})
-		loadLists($session.user._id)
+		const json = await res.json()
+		$lists.push(json.list)
+		$lists = $lists
 	}
 
 	async function editList(list, e) {
