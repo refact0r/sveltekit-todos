@@ -41,7 +41,7 @@ export async function post(request) {
 		return {
 			status: 200,
 			body: {
-				status: 'Success'
+				_id: listId
 			}
 		}
 	} catch (err) {
@@ -64,10 +64,7 @@ export async function put(request) {
 		await collection.updateOne({ _id: list._id }, { $set: { name: list.name } })
 
 		return {
-			status: 200,
-			body: {
-				status: 'Success'
-			}
+			status: 200
 		}
 	} catch (err) {
 		console.log(err)
@@ -89,10 +86,7 @@ export async function del(request) {
 		await db.collection('todos').deleteMany({ listId: list._id })
 
 		return {
-			status: 200,
-			body: {
-				status: 'Success'
-			}
+			status: 200
 		}
 	} catch (err) {
 		console.log(err)

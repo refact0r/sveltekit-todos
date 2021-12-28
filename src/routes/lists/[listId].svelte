@@ -104,6 +104,11 @@
 		loadTodos($session.user._id)
 	}
 
+	async function sync() {
+		loadTodos($session.user._id)
+		loadLists($session.user._id)
+	}
+
 	function blurOnEnter(event) {
 		if (event.keyCode === 13) {
 			event.target.blur()
@@ -128,7 +133,7 @@
 			<button class="icon-button-lg delete-list" on:click={() => deleteList()}>
 				<i class="bi bi-trash" />
 			</button>
-			<button class="icon-button-lg sync" on:click={() => loadTodos($session.user._id)}>
+			<button class="icon-button-lg sync" on:click={() => sync()}>
 				<i class="bi bi-arrow-repeat" />
 			</button>
 		</div>

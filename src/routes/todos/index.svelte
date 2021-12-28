@@ -63,6 +63,11 @@
 		})
 	}
 
+	async function sync() {
+		loadTodos($session.user._id)
+		loadLists($session.user._id)
+	}
+
 	function blurOnEnter(event) {
 		if (event.keyCode === 13) {
 			event.target.blur()
@@ -78,7 +83,7 @@
 	<div class="scroll-container">
 		<div class="heading-container">
 			<h1>Todos</h1>
-			<button class="icon-button-lg sync" on:click={() => loadTodos($session.user._id)}
+			<button class="icon-button-lg sync" on:click={() => sync()}
 				><i class="bi bi-arrow-repeat" />
 			</button>
 		</div>
