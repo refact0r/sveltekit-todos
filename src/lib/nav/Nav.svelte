@@ -1,6 +1,8 @@
 <script>
+	import { tick } from 'svelte'
 	import { session } from '$app/stores'
 	import { page } from '$app/stores'
+	import { goto } from '$app/navigation'
 	import { lists, loadLists } from '$lib/stores/lists.js'
 	import logo from './svelte-logo.svg'
 
@@ -9,11 +11,13 @@
 			name: 'New list'
 		}
 		console.log(list)
-		await fetch(`/lists/${$session.user._id}.json`, {
+		const res = await fetch(`/lists/${$session.user._id}.json`, {
 			method: 'POST',
 			body: JSON.stringify(list)
 		})
 		loadLists($session.user._id)
+		const json = await res.json()
+		goto(`/lists/${json._id}`)
 	}
 </script>
 
