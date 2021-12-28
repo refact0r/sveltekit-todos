@@ -41,11 +41,13 @@
 		}
 		text = ''
 		console.log(todo)
-		await fetch(`/todos/${$session.user._id}.json`, {
+		const res = await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'POST',
 			body: JSON.stringify(todo)
 		})
-		loadTodos($session.user._id)
+		const json = await res.json()
+		$todos.push(json.todo)
+		$todos = $todos
 	}
 
 	async function completeTodo(index) {
