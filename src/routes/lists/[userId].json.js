@@ -41,7 +41,11 @@ export async function post(request) {
 		return {
 			status: 200,
 			body: {
-				_id: listId
+				list: {
+					_id: listId,
+					name: list.name,
+					userId: request.params.userId
+				}
 			}
 		}
 	} catch (err) {

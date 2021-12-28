@@ -17,7 +17,7 @@
 		})
 		loadLists($session.user._id)
 		const json = await res.json()
-		goto(`/lists/${json._id}`)
+		goto(`/lists/${json.list._id}`)
 	}
 </script>
 
