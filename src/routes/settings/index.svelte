@@ -60,6 +60,8 @@
 	<h1>Settings</h1>
 	{#if $session.user}
 		<h3>Account</h3>
+		<h5>Email</h5>
+		<div>{$session.user.email}</div>
 		<h5>Username</h5>
 		<input
 			type="text"
@@ -67,15 +69,7 @@
 			on:change={(e) => editName(e)}
 			on:keydown={(e) => blurOnEnter(e)}
 		/>
-		<h5>Email</h5>
-		<input
-			type="email"
-			name="email"
-			value={$session.user.email}
-			on:change={(e) => editName(e)}
-			on:keydown={(e) => blurOnEnter(e)}
-		/>
-		<br /><br />
+		<h5>Log out</h5>
 		<button on:click={logout}>Log out</button>
 		<h3>Appearance</h3>
 		<h5>Theme</h5>
@@ -99,6 +93,11 @@
 
 	h1 {
 		margin-top: 0;
+		margin-bottom: 20px;
+	}
+
+	h3 {
+		margin: 1rem 0 1rem 0;
 	}
 
 	h5 {

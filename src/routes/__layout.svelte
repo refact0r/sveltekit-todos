@@ -29,10 +29,8 @@
 </script>
 
 <svelte:head>
-	{#if $session.user && $session.user.theme}
-		<meta name="color-scheme" content={$session.user.theme} />
-		<link rel="stylesheet" href={`/themes/${$session.user.theme}.css`} />
-	{/if}
+	<meta name="color-scheme" content={$session.user ? $session.user.theme : 'dark'} />
+	<link rel="stylesheet" href={`/themes/${$session.user ? $session.user.theme : 'dark'}.css`} />
 </svelte:head>
 
 {#if $session.user}

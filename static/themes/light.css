@@ -1,12 +1,12 @@
 :root {
-	--bg-color-1: hsl(200, 41%, 83%) !important;
-	--bg-color-1-5: hsl(200, 30%, 79%) !important;
-	--bg-color-2: hsl(200, 100%, 93%) !important;
-	--bg-color-2-5: hsl(200, 58%, 88%) !important;
-	--bg-color-3: hsl(200, 41%, 83%) !important;
-	--bg-color-3-5: hsl(200, 30%, 79%) !important;
-	--sub-color: hsl(200, 11%, 36%) !important;
-	--font-color: hsl(200, 10%, 14%) !important;
+	--bg-color-1: hsl(200, 41%, 83%);
+	--bg-color-1-5: hsl(200, 30%, 79%);
+	--bg-color-2: hsl(200, 100%, 93%);
+	--bg-color-2-5: hsl(200, 58%, 88%);
+	--bg-color-3: hsl(200, 41%, 83%);
+	--bg-color-3-5: hsl(200, 30%, 79%);
+	--sub-color: hsl(200, 11%, 36%);
+	--font-color: hsl(200, 10%, 14%);
 }
 
 .logo img {
