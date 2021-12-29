@@ -11,9 +11,14 @@
 </script>
 
 <script>
+	import { slide } from 'svelte/transition'
+	import { quartOut } from 'svelte/easing'
 	import { session } from '$app/stores'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
-	import { lists } from '$lib/stores/lists.js'
+	import { lists, loadLists } from '$lib/stores/lists.js'
+
+	// const [send, receive] = crossfade({})
+
 	let text = ''
 
 	async function addTodo() {
@@ -36,11 +41,12 @@
 		$todos = $todos
 	}
 
-	async function completeTodo(index) {
-		$todos[index].completed = !$todos[index].completed
+	async function completeTodo(todo) {
+		todo.completed = !todo.completed
+		$todos = $todos
 		await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'PUT',
-			body: JSON.stringify($todos[index])
+			body: JSON.stringify(todo)
 		})
 	}
 
@@ -56,9 +62,8 @@
 		})
 	}
 
-	async function deleteTodo(index) {
-		const todo = $todos.splice(index, 1)[0]
-		$todos = $todos
+	async function deleteTodo(todo) {
+		$todos = $todos.filter((t) => t !== todo)
 		await fetch(`/todos/${$session.user._id}.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
@@ -89,76 +94,69 @@
 				><i class="bi bi-arrow-repeat" />
 			</button>
 		</div>
-		<div class="list">
+		<div class="item-container">
 			{#if $todos}
-				{#each $todos as todo, index}
-					{#if !todo.completed}
-						<div class="todo">
-							<button
-								class={'icon-button ' +
-									(todo.completed ? 'checkbox checked' : 'checkbox')}
-								on:click={() => completeTodo(index)}
-							>
-								<i class="bi bi-check-lg" />
-							</button>
-							<div class="text">
-								<input
-									class="name"
-									type="text"
-									value={todo.name}
-									on:change={(e) => editTodo(todo, e)}
-									on:keydown={(e) => blurOnEnter(e)}
-								/>
-								{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
-									<a
-										class="list-name"
-										sveltekit:prefetch
-										href="/lists/{todo.listId}"
-										>{$lists.find((list) => todo.listId === list._id).name}</a
-									>
-								{/if}
-							</div>
-							<button class="icon-button delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" />
-							</button>
+				{#each $todos.filter((todo) => !todo.completed) as todo (todo._id)}
+					<div class="todo" transition:slide|local={{ duration: 400, easing: quartOut }}>
+						<button
+							class={'icon-button ' +
+								(todo.completed ? 'checkbox checked' : 'checkbox')}
+							on:click={() => completeTodo(todo)}
+						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<div class="text-container">
+							<input
+								class="name"
+								type="text"
+								value={todo.name}
+								on:change={(e) => editTodo(todo, e)}
+								on:keydown={(e) => blurOnEnter(e)}
+							/>
+							{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
+								<a class="list-name" sveltekit:prefetch href="/lists/{todo.listId}"
+									>{$lists.find((list) => todo.listId === list._id).name}</a
+								>
+							{/if}
 						</div>
-					{/if}
+						<button class="icon-button delete" on:click={() => deleteTodo(todo)}
+							><i class="bi bi-x-lg" />
+						</button>
+					</div>
 				{/each}
 				{#if $todos.find((todo) => todo.completed)}
-					<h2>Completed</h2>
+					<h2 transition:slide|local={{ duration: 400, easing: quartOut }}>Completed</h2>
 				{/if}
-				{#each $todos as todo, index}
-					{#if todo.completed}
-						<div class="todo completed">
-							<button
-								class={'icon-button ' +
-									(todo.completed ? 'checkbox checked' : 'checkbox')}
-								on:click={() => completeTodo(index)}
-							>
-								<i class="bi bi-check-lg" />
-							</button>
-							<div class="text">
-								<input
-									class="name"
-									type="text"
-									value={todo.name}
-									on:change={(e) => editTodo(todo, e)}
-									on:keydown={(e) => blurOnEnter(e)}
-								/>
-								{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
-									<a
-										class="list-name"
-										sveltekit:prefetch
-										href="/lists/{todo.listId}"
-										>{$lists.find((list) => todo.listId === list._id).name}</a
-									>
-								{/if}
-							</div>
-							<button class="icon-button delete" on:click={() => deleteTodo(index)}
-								><i class="bi bi-x-lg" />
-							</button>
+				{#each $todos.filter((todo) => todo.completed) as todo (todo._id)}
+					<div
+						class="todo completed"
+						transition:slide|local={{ duration: 400, easing: quartOut }}
+					>
+						<button
+							class={'icon-button ' +
+								(todo.completed ? 'checkbox checked' : 'checkbox')}
+							on:click={() => completeTodo(todo)}
+						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<div class="text-container">
+							<input
+								class="name"
+								type="text"
+								value={todo.name}
+								on:change={(e) => editTodo(todo, e)}
+								on:keydown={(e) => blurOnEnter(e)}
+							/>
+							{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
+								<a class="list-name" sveltekit:prefetch href="/lists/{todo.listId}"
+									>{$lists.find((list) => todo.listId === list._id).name}</a
+								>
+							{/if}
 						</div>
-					{/if}
+						<button class="icon-button delete" on:click={() => deleteTodo(todo)}
+							><i class="bi bi-x-lg" />
+						</button>
+					</div>
 				{/each}
 			{/if}
 		</div>
@@ -180,39 +178,6 @@
 		padding: 20px 0;
 	}
 
-	.heading-container {
-		background: var(--bg-color-1);
-		position: sticky;
-		top: 0;
-		width: 100%;
-		padding: 20px 40px 10px 40px;
-		border-radius: 18px;
-		display: flex;
-		align-items: center;
-	}
-
-	h1 {
-		margin: 0;
-		margin-right: auto;
-	}
-
-	.list {
-		padding: 10px 40px 88px 40px;
-	}
-
-	.text {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-	}
-
-	input {
-		width: 100%;
-		background: transparent;
-		padding: 0;
-		line-height: 24px;
-	}
-
 	.list-name {
 		font-size: 0.75em;
 		line-height: 1em;
@@ -222,16 +187,5 @@
 	}
 	.list-name:hover {
 		color: var(--font-color);
-	}
-
-	.delete {
-		margin-left: 10px;
-	}
-
-	.name {
-		background: none;
-	}
-	.name:focus {
-		outline: none;
 	}
 </style>

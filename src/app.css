@@ -64,6 +64,49 @@ button:hover {
 	cursor: pointer;
 }
 
+.heading-container {
+	background: var(--bg-color-1);
+	position: sticky;
+	top: 0;
+	width: 100%;
+	padding: 20px 40px 10px 40px;
+	border-radius: 18px;
+	display: flex;
+	align-items: center;
+}
+.heading-container h1 {
+	margin: 0;
+	margin-right: auto;
+}
+
+.scroll-container {
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	scrollbar-color: var(--bg-color-1-5) transparent;
+	height: 100%;
+}
+
+.item-container {
+	padding: 10px 40px 86px 40px;
+}
+
+.text-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.name {
+	width: 100%;
+	background: transparent;
+	padding: 0;
+	line-height: 24px;
+}
+.name:focus {
+	outline: none;
+}
+
 .icon-button {
 	display: flex;
 	width: 20px;
@@ -128,12 +171,8 @@ button:hover {
 	margin-right: 2px !important;
 }
 
-.scroll-container {
-	display: flex;
-	flex-direction: column;
-	overflow-y: auto;
-	scrollbar-color: var(--bg-color-1-5) transparent;
-	height: 100%;
+.delete {
+	margin-left: 10px;
 }
 
 .new-container {
@@ -163,4 +202,10 @@ button:hover {
 }
 .add.active {
 	color: var(--font-color);
+}
+.add.active:hover {
+	color: var(--font-color);
+}
+.add:hover {
+	color: var(--sub-color);
 }
