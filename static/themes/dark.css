@@ -1,0 +1,4 @@
+.logo img {
+	filter: saturate(0) brightness(0.6) contrast(2) invert(77%) sepia(38%) saturate(246%)
+		hue-rotate(156deg) brightness(86%) contrast(89%);
+}

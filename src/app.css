@@ -64,6 +64,14 @@ button:hover {
 	cursor: pointer;
 }
 
+hr {
+	height: 2px;
+	background: var(--bg-color-2-5);
+	border: none;
+	flex-shrink: 0;
+	border-radius: 2px;
+}
+
 .heading-container {
 	background: var(--bg-color-1);
 	position: sticky;

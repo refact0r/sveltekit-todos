@@ -1,0 +1,15 @@
+:root {
+	--bg-color-1: hsl(200, 41%, 83%) !important;
+	--bg-color-1-5: hsl(200, 30%, 79%) !important;
+	--bg-color-2: hsl(200, 100%, 93%) !important;
+	--bg-color-2-5: hsl(200, 58%, 88%) !important;
+	--bg-color-3: hsl(200, 41%, 83%) !important;
+	--bg-color-3-5: hsl(200, 30%, 79%) !important;
+	--sub-color: hsl(200, 11%, 36%) !important;
+	--font-color: hsl(200, 10%, 14%) !important;
+}
+
+.logo img {
+	filter: saturate(0) brightness(0.6) contrast(2) sepia(38%) saturate(246%) hue-rotate(156deg)
+		brightness(110%) contrast(75%);
+}
