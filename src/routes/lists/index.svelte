@@ -27,7 +27,7 @@
 		}
 		text = ''
 		console.log(list)
-		const res = await fetch(`/lists/${$session.user._id}.json`, {
+		const res = await fetch(`/lists.json`, {
 			method: 'POST',
 			body: JSON.stringify(list)
 		})
@@ -42,17 +42,17 @@
 			return
 		}
 		list.name = e.target.value
-		await fetch(`/lists/${$session.user._id}.json`, {
+		await fetch(`/lists.json`, {
 			method: 'PUT',
 			body: JSON.stringify(list)
 		})
-		loadLists($session.user._id)
+		loadLists()
 	}
 
 	async function deleteList(index) {
 		const list = $lists.splice(index, 1)[0]
 		lists.set($lists)
-		await fetch(`/lists/${$session.user._id}.json`, {
+		await fetch(`/lists.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(list)
 		})
@@ -73,7 +73,7 @@
 	<div class="scroll-container">
 		<div class="heading-container">
 			<h1>Lists</h1>
-			<button class="icon-button-lg sync" on:click={() => loadLists($session.user._id)}
+			<button class="icon-button-lg sync" on:click={() => loadLists()}
 				><i class="bi bi-arrow-repeat" />
 			</button>
 		</div>

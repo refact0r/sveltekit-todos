@@ -2,11 +2,19 @@ import clientPromise from '$lib/db'
 import { v4 as uuid } from 'uuid'
 
 export async function get(request) {
+	if (!request.locals.user) {
+		return {
+			status: 401,
+			body: {
+				message: 'Unauthorized'
+			}
+		}
+	}
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
 		const collection = db.collection('todos')
-		const todos = await collection.find({ userId: request.params.userId }).toArray()
+		const todos = await collection.find({ userId: request.locals.user._id }).toArray()
 
 		return {
 			status: 200,
@@ -26,6 +34,14 @@ export async function get(request) {
 }
 
 export async function post(request) {
+	if (!request.locals.user) {
+		return {
+			status: 401,
+			body: {
+				message: 'Unauthorized'
+			}
+		}
+	}
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
@@ -36,7 +52,7 @@ export async function post(request) {
 			_id: todoId,
 			name: todo.name,
 			completed: false,
-			userId: request.params.userId,
+			userId: request.locals.user._id,
 			listId: todo.listId
 		})
 
@@ -47,7 +63,7 @@ export async function post(request) {
 					_id: todoId,
 					name: todo.name,
 					completed: false,
-					userId: request.params.userId,
+					userId: request.locals.user._id,
 					listId: todo.listId
 				}
 			}
@@ -64,6 +80,14 @@ export async function post(request) {
 }
 
 export async function put(request) {
+	if (!request.locals.user) {
+		return {
+			status: 401,
+			body: {
+				message: 'Unauthorized'
+			}
+		}
+	}
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
@@ -89,6 +113,14 @@ export async function put(request) {
 }
 
 export async function del(request) {
+	if (!request.locals.user) {
+		return {
+			status: 401,
+			body: {
+				message: 'Unauthorized'
+			}
+		}
+	}
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')

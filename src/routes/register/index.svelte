@@ -43,8 +43,8 @@
 			if (res.ok) {
 				const data = await res.json()
 				$session.user = data.user
-				loadLists($session.user._id)
-				loadTodos($session.user._id)
+				loadLists()
+				loadTodos()
 				goto('/')
 			} else {
 				error = 'An error occured'

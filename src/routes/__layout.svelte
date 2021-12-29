@@ -22,11 +22,18 @@
 
 	onMount(async () => {
 		if ($session.user) {
-			loadLists($session.user._id)
-			loadTodos($session.user._id)
+			loadLists()
+			loadTodos()
 		}
 	})
 </script>
+
+<svelte:head>
+	{#if $session.user && $session.user.theme}
+		<meta name="color-scheme" content={$session.user.theme} />
+		<link rel="stylesheet" href={`/themes/${$session.user.theme}.css`} />
+	{/if}
+</svelte:head>
 
 {#if $session.user}
 	<Nav />

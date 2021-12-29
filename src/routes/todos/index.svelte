@@ -32,7 +32,7 @@
 		}
 		text = ''
 		console.log(todo)
-		const res = await fetch(`/todos/${$session.user._id}.json`, {
+		const res = await fetch(`/todos.json`, {
 			method: 'POST',
 			body: JSON.stringify(todo)
 		})
@@ -44,7 +44,7 @@
 	async function completeTodo(todo) {
 		todo.completed = !todo.completed
 		$todos = $todos
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos.json`, {
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
@@ -56,7 +56,7 @@
 			return
 		}
 		todo.name = e.target.value
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos.json`, {
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
@@ -64,15 +64,15 @@
 
 	async function deleteTodo(todo) {
 		$todos = $todos.filter((t) => t !== todo)
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
 	}
 
 	async function sync() {
-		loadTodos($session.user._id)
-		loadLists($session.user._id)
+		loadTodos()
+		loadLists()
 	}
 
 	function blurOnEnter(event) {
