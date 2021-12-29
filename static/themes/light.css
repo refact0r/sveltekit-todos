@@ -9,7 +9,34 @@
 	--font-color: hsl(200, 10%, 14%);
 }
 
+body {
+	animation: flicker 2s infinite;
+}
+
+@keyframes flicker {
+	0% {
+		background: var(--bg-color-2);
+		color: var(--font-color);
+		opacity: 1;
+	}
+	95% {
+		background: var(--bg-color-2);
+		color: var(--font-color);
+		opacity: 1;
+	}
+	96% {
+		background: white;
+		color: white;
+		opacity: 0;
+	}
+	100% {
+		background: white;
+		color: white;
+		opacity: 0;
+	}
+}
+
 .logo img {
 	filter: saturate(0) brightness(0.6) contrast(2) sepia(38%) saturate(246%) hue-rotate(156deg)
-		brightness(110%) contrast(75%);
+		brightness(120%) contrast(70%);
 }
