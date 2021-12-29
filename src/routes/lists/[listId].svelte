@@ -15,10 +15,11 @@
 </script>
 
 <script>
-	import { onMount } from 'svelte'
+	import { slide } from 'svelte/transition'
+	import { quartOut } from 'svelte/easing'
 	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
-	import { lists } from '$lib/stores/lists.js'
+	import { lists, loadLists } from '$lib/stores/lists.js'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
 
 	export let listId
@@ -139,11 +140,14 @@
 				<i class="bi bi-arrow-repeat" />
 			</button>
 		</div>
-		<div class="list">
+		<div class="item-container">
 			{#if $todos}
 				{#each $todos as todo, index}
 					{#if todo.listId === listId && !todo.completed}
-						<div class="todo">
+						<div
+							class="todo"
+							transition:slide|local={{ duration: 400, easing: quartOut }}
+						>
 							<button
 								class={'icon-button ' +
 									(todo.completed ? 'checkbox checked' : 'checkbox')}
@@ -165,11 +169,14 @@
 					{/if}
 				{/each}
 				{#if $todos.find((todo) => todo.listId === listId && todo.completed)}
-					<h2>Completed</h2>
+					<h2 transition:slide|local={{ duration: 400, easing: quartOut }}>Completed</h2>
 				{/if}
 				{#each $todos as todo, index}
 					{#if todo.listId === listId && todo.completed}
-						<div class="todo completed">
+						<div
+							class="todo completed"
+							transition:slide|local={{ duration: 400, easing: quartOut }}
+						>
 							<button
 								class={'icon-button ' +
 									(todo.completed ? 'checkbox checked' : 'checkbox')}
@@ -210,44 +217,12 @@
 		padding: 20px 0;
 	}
 
-	.heading-container {
-		background: var(--bg-color-1);
-		position: sticky;
-		top: 0;
-		width: 100%;
-		padding: 20px 40px 10px 40px;
-		border-radius: 18px;
-		display: flex;
-		align-items: center;
-	}
-
 	.list-name {
 		font-size: 2em;
 		font-weight: bold;
 		background: none;
 		margin-right: auto;
-	}
-
-	.list {
-		padding: 10px 40px 88px 40px;
-	}
-
-	input {
 		width: 100%;
-		background: var(--bg-color-2);
-		padding: 0;
-		line-height: 24px;
-	}
-
-	.delete {
-		margin-left: 10px;
-	}
-
-	.name {
-		background: none;
-	}
-	.name:focus {
-		outline: none;
 	}
 
 	.delete-list i {

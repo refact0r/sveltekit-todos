@@ -13,6 +13,7 @@
 	import { onMount } from 'svelte'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
+	import { quartOut, quartIn } from 'svelte/easing'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
 	import { loadLists } from '$lib/stores/lists.js'
 	import Nav from '$lib/nav/Nav.svelte'
@@ -45,8 +46,8 @@
 		{#key key}
 			<div
 				class="content-container"
-				in:fly={{ x: -5, duration: 200, delay: 200 }}
-				out:fly|local={{ x: 5, duration: 200 }}
+				in:fly={{ x: -5, duration: 100, delay: 100 }}
+				out:fly|local={{ x: 5, duration: 100 }}
 			>
 				<slot />
 			</div>

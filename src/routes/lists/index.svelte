@@ -11,6 +11,8 @@
 </script>
 
 <script>
+	import { slide } from 'svelte/transition'
+	import { quartOut } from 'svelte/easing'
 	import { goto } from '$app/navigation'
 	import { session } from '$app/stores'
 	import { lists, loadLists } from '$lib/stores/lists.js'
@@ -75,10 +77,10 @@
 				><i class="bi bi-arrow-repeat" />
 			</button>
 		</div>
-		<div class="list-container">
+		<div class="item-container">
 			{#if $lists}
 				{#each $lists as list, index}
-					<div class="list">
+					<div class="list" transition:slide|local={{ duration: 400, easing: quartOut }}>
 						<button
 							class="icon-button goto"
 							on:click={() => goto(`/lists/${$lists[index]._id}`)}
@@ -116,35 +118,8 @@
 		padding: 20px 0;
 	}
 
-	.heading-container {
-		background: var(--bg-color-1);
-		position: sticky;
-		top: 0;
-		width: 100%;
-		padding: 20px 40px 10px 40px;
-		border-radius: 18px;
-		display: flex;
-		align-items: center;
-	}
-
-	h1 {
-		margin: 0;
-		margin-right: auto;
-	}
-
-	.list-container {
-		padding: 10px 40px 88px 40px;
-	}
-
 	.goto {
 		margin-right: 12px;
-	}
-
-	input {
-		width: 100%;
-		background: var(--bg-color-2);
-		padding: 0;
-		line-height: 24px;
 	}
 
 	.list {
@@ -154,16 +129,5 @@
 		border-radius: 12px;
 		padding: 10px 12px;
 		margin-bottom: 8px;
-	}
-
-	.delete {
-		margin-left: 10px;
-	}
-
-	.name {
-		background: none;
-	}
-	.name:focus {
-		outline: none;
 	}
 </style>
