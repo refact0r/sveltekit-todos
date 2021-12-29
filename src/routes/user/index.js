@@ -1,9 +1,6 @@
 import clientPromise from '$lib/db'
 
 export async function get(request) {
-	const client = await clientPromise
-	const db = client.db('Todos')
-
 	if (!request.locals.user) {
 		return {
 			status: 401,
@@ -13,6 +10,8 @@ export async function get(request) {
 		}
 	}
 
+	const client = await clientPromise
+	const db = client.db('Todos')
 	const user = await db.collection('users').findOne({ _id: request.locals.user._id })
 
 	if (!user) {
@@ -33,14 +32,22 @@ export async function get(request) {
 }
 
 export async function put(request) {
+	if (!request.locals.user) {
+		return {
+			status: 401,
+			body: {
+				message: 'Unauthorized'
+			}
+		}
+	}
 	try {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		const collection = db.collection('todos')
-		const todo = JSON.parse(request.body)
+		const collection = db.collection('users')
+		const user = JSON.parse(request.body)
 		await collection.updateOne(
-			{ _id: todo._id },
-			{ $set: { name: todo.name, completed: todo.completed } }
+			{ _id: user._id },
+			{ $set: { name: user.name, email: user.email, theme: user.theme } }
 		)
 
 		return {

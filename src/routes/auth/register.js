@@ -30,7 +30,8 @@ export const post = async ({ body }) => {
 		_id: userId,
 		name: body.name,
 		email: body.email,
-		password: stringHash(body.password)
+		password: stringHash(body.password),
+		theme: 'dark'
 	})
 
 	delete result.password
