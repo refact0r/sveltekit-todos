@@ -47,7 +47,7 @@ export async function put(request) {
 		const user = JSON.parse(request.body)
 		await collection.updateOne(
 			{ _id: user._id },
-			{ $set: { name: user.name, email: user.email, theme: user.theme } }
+			{ $set: { name: user.name, theme: user.theme } }
 		)
 
 		return {
