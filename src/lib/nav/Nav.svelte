@@ -11,11 +11,11 @@
 			name: 'New list'
 		}
 		console.log(list)
-		const res = await fetch(`/lists/${$session.user._id}.json`, {
+		const res = await fetch(`/lists.json`, {
 			method: 'POST',
 			body: JSON.stringify(list)
 		})
-		loadLists($session.user._id)
+		loadLists()
 		const json = await res.json()
 		goto(`/lists/${json.list._id}`)
 	}
@@ -30,7 +30,8 @@
 		<a class:active={$page.path === '/'} sveltekit:prefetch href="/">Home</a>
 		<a class:active={$page.path === '/todos'} sveltekit:prefetch href="/todos">Todos</a>
 		<a class:active={$page.path === '/lists'} sveltekit:prefetch href="/lists">Lists</a>
-		<a class:active={$page.path === '/profile'} sveltekit:prefetch href="/profile">Profile</a>
+		<a class:active={$page.path === '/settings'} sveltekit:prefetch href="/settings">Settings</a
+		>
 		<hr />
 		{#if $lists}
 			{#each $lists as list}
@@ -81,10 +82,6 @@
 
 	hr {
 		width: calc(100% - 20px);
-		height: 2px;
-		background: var(--bg-color-2-5);
-		border: none;
-		flex-shrink: 0;
 	}
 
 	.logo {
@@ -95,13 +92,10 @@
 	.logo:hover {
 		background: none;
 	}
-
 	.logo img {
 		margin-left: -5px;
 		width: 32px;
 		height: 32px;
-		filter: saturate(0) brightness(0.6) contrast(2) invert(77%) sepia(38%) saturate(246%)
-			hue-rotate(156deg) brightness(86%) contrast(89%);
 	}
 
 	h1 {

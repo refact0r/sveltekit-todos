@@ -42,7 +42,7 @@
 		}
 		text = ''
 		console.log(todo)
-		const res = await fetch(`/todos/${$session.user._id}.json`, {
+		const res = await fetch(`/todos.json`, {
 			method: 'POST',
 			body: JSON.stringify(todo)
 		})
@@ -53,7 +53,7 @@
 
 	async function completeTodo(index) {
 		$todos[index].completed = !$todos[index].completed
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos.json`, {
 			method: 'PUT',
 			body: JSON.stringify($todos[index])
 		})
@@ -65,7 +65,7 @@
 			return
 		}
 		todo.name = e.target.value
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos.json`, {
 			method: 'PUT',
 			body: JSON.stringify(todo)
 		})
@@ -74,7 +74,7 @@
 	async function deleteTodo(index) {
 		const todo = $todos.splice(index, 1)[0]
 		$todos = $todos
-		await fetch(`/todos/${$session.user._id}.json`, {
+		await fetch(`/todos.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
@@ -86,7 +86,7 @@
 			return
 		}
 		$lists[listIndex].name = e.target.value
-		await fetch(`/lists/${$session.user._id}.json`, {
+		await fetch(`/lists.json`, {
 			method: 'PUT',
 			body: JSON.stringify($lists[listIndex])
 		})
@@ -100,16 +100,16 @@
 		}
 		const list = $lists.splice(listIndex, 1)[0]
 		$lists = $lists
-		await fetch(`/lists/${$session.user._id}.json`, {
+		await fetch(`/lists.json`, {
 			method: 'DELETE',
 			body: JSON.stringify(list)
 		})
-		loadTodos($session.user._id)
+		loadTodos()
 	}
 
 	async function sync() {
-		loadTodos($session.user._id)
-		loadLists($session.user._id)
+		loadTodos()
+		loadLists()
 	}
 
 	function blurOnEnter(event) {
