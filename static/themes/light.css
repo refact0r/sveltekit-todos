@@ -8,7 +8,7 @@
 	--sub-color: hsl(200, 11%, 36%);
 	--font-color: hsl(200, 10%, 14%);
 }
-
+/*
 body {
 	animation: flicker 2s infinite;
 }
@@ -17,17 +17,17 @@ body {
 	0% {
 		opacity: 1;
 	}
-	95% {
+	98% {
 		opacity: 1;
 	}
-	96% {
+	99% {
 		opacity: 0;
 	}
 	100% {
 		opacity: 0;
 	}
 }
-
+*/
 .logo img {
 	filter: saturate(0) brightness(0.6) contrast(2) sepia(38%) saturate(246%) hue-rotate(156deg)
 		brightness(120%) contrast(70%);
