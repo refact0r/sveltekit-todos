@@ -53,7 +53,8 @@ export async function post(request) {
 			name: todo.name,
 			completed: false,
 			userId: request.locals.user._id,
-			listId: todo.listId
+			listId: todo.listId,
+			dueDate: todo.dueDate
 		})
 
 		return {
@@ -64,7 +65,8 @@ export async function post(request) {
 					name: todo.name,
 					completed: false,
 					userId: request.locals.user._id,
-					listId: todo.listId
+					listId: todo.listId,
+					dueDate: todo.dueDate
 				}
 			}
 		}
@@ -95,7 +97,7 @@ export async function put(request) {
 		const todo = JSON.parse(request.body)
 		await collection.updateOne(
 			{ _id: todo._id },
-			{ $set: { name: todo.name, completed: todo.completed } }
+			{ $set: { name: todo.name, completed: todo.completed, dueDate: todo.dueDate } }
 		)
 
 		return {
