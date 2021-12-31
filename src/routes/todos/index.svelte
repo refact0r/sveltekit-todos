@@ -76,7 +76,6 @@
 
 	async function startEditDate(todo) {
 		currentTodo = todo
-		console.log(currentTodo)
 		modal.show(todo.dueDate)
 	}
 
