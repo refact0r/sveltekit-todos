@@ -14,17 +14,16 @@
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
-	import { loadLists } from '$lib/stores/lists.js'
+	import { lists, loadLists } from '$lib/stores/lists.js'
 	import Nav from '$lib/nav/Nav.svelte'
 
 	export let key
 
-	onMount(async () => {
-		if ($session.user) {
-			loadLists()
-			loadTodos()
-		}
-	})
+	$: if ($session.user) {
+		console.log('test')
+		$todos = $session.todos
+		$lists = $session.lists
+	}
 </script>
 
 <svelte:head>

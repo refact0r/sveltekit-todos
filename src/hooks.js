@@ -47,9 +47,16 @@ export const getSession = async (request) => {
 	if (request.locals.user) {
 		const client = await clientPromise
 		const db = client.db('Todos')
-		request.locals.user = await db
-			.collection('users')
-			.findOne({ _id: request.locals.user._id })
+		request.locals.user = await db.collection('users').findOne({ _id: request.locals.user._id })
+		delete request.locals.user.password
+		request.locals.todos = await db
+			.collection('todos')
+			.find({ userId: request.locals.user._id })
+			.toArray()
+		request.locals.lists = await db
+			.collection('lists')
+			.find({ userId: request.locals.user._id })
+			.toArray()
 	}
-	return { user: request.locals.user }
+	return request.locals
 }
