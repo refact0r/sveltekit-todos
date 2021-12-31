@@ -13,13 +13,16 @@
 <script>
 	import { slide } from 'svelte/transition'
 	import { quartOut } from 'svelte/easing'
-	import { session } from '$app/stores'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
 	import { lists, loadLists } from '$lib/stores/lists.js'
-
-	// const [send, receive] = crossfade({})
+	import DateModal from '$lib/DateModal.svelte'
+	import { epochToText } from '$lib/date.js'
 
 	let text = ''
+	let modal
+	let currentTodo
+
+	$: console.log($todos)
 
 	async function addTodo() {
 		if (text == '') {
@@ -28,7 +31,8 @@
 		const todo = {
 			name: text,
 			completed: false,
-			listId: ''
+			listId: '',
+			dueDate: null
 		}
 		text = ''
 		console.log(todo)
@@ -50,7 +54,7 @@
 		})
 	}
 
-	async function editTodo(todo, e) {
+	async function editName(todo, e) {
 		if (e.target.value == '') {
 			e.target.value = todo.name
 			return
@@ -68,6 +72,32 @@
 			method: 'DELETE',
 			body: JSON.stringify(todo)
 		})
+	}
+
+	async function startEditDate(todo) {
+		currentTodo = todo
+		console.log(currentTodo)
+		modal.show(todo.dueDate)
+	}
+
+	async function finishEditDate(date) {
+		if (!date && currentTodo.dueDate !== null) {
+			currentTodo.dueDate = null
+			$todos = $todos
+			await fetch(`/todos.json`, {
+				method: 'PUT',
+				body: JSON.stringify(currentTodo)
+			})
+		}
+		if (date && date.getTime() != currentTodo.dueDate) {
+			currentTodo.dueDate = date.getTime()
+			$todos = $todos
+			await fetch(`/todos.json`, {
+				method: 'PUT',
+				body: JSON.stringify(currentTodo)
+			})
+		}
+		currentTodo = null
 	}
 
 	async function sync() {
@@ -90,8 +120,8 @@
 	<div class="scroll-container">
 		<div class="heading-container">
 			<h1>Todos</h1>
-			<button class="icon-button-lg sync" on:click={() => sync()}
-				><i class="bi bi-arrow-repeat" />
+			<button class="icon-button-lg sync" on:click={() => sync()}>
+				<i class="bi bi-arrow-repeat" />
 			</button>
 		</div>
 		<div class="item-container">
@@ -110,15 +140,27 @@
 								class="name"
 								type="text"
 								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
+								on:change={(e) => editName(todo, e)}
 								on:keydown={(e) => blurOnEnter(e)}
 							/>
 							{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
-								<a class="list-name" sveltekit:prefetch href="/lists/{todo.listId}"
-									>{$lists.find((list) => todo.listId === list._id).name}</a
-								>
+								<a class="list-name" sveltekit:prefetch href="/lists/{todo.listId}">
+									{$lists.find((list) => todo.listId === list._id).name}
+								</a>
 							{/if}
 						</div>
+						{#if todo.dueDate}
+							<button class="date" on:click={() => startEditDate(todo)}>
+								{epochToText(todo.dueDate)}
+							</button>
+						{:else}
+							<button
+								class="icon-button new-date"
+								on:click={() => startEditDate(todo)}
+							>
+								<i class="bi bi-calendar2-plus" />
+							</button>
+						{/if}
 						<button class="icon-button delete" on:click={() => deleteTodo(todo)}
 							><i class="bi bi-x-lg" />
 						</button>
@@ -144,17 +186,17 @@
 								class="name"
 								type="text"
 								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
+								on:change={(e) => editName(todo, e)}
 								on:keydown={(e) => blurOnEnter(e)}
 							/>
 							{#if todo.listId && $lists.find((list) => todo.listId === list._id)}
 								<a class="list-name" sveltekit:prefetch href="/lists/{todo.listId}"
-									>{$lists.find((list) => todo.listId === list._id).name}</a
-								>
+									>{$lists.find((list) => todo.listId === list._id).name}
+								</a>
 							{/if}
 						</div>
-						<button class="icon-button delete" on:click={() => deleteTodo(todo)}
-							><i class="bi bi-x-lg" />
+						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
+							<i class="bi bi-x-lg" />
 						</button>
 					</div>
 				{/each}
@@ -170,6 +212,7 @@
 		</div>
 	</div>
 </div>
+<DateModal bind:this={modal} edit={(date) => finishEditDate(date)} />
 
 <style>
 	.content {
@@ -186,6 +229,18 @@
 		width: fit-content;
 	}
 	.list-name:hover {
+		color: var(--font-color);
+	}
+
+	.date,
+	.new-date {
+		margin-left: 12px;
+	}
+
+	.date {
+		color: var(--sub-color);
+	}
+	.date:hover {
 		color: var(--font-color);
 	}
 </style>

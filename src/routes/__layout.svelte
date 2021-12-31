@@ -65,13 +65,14 @@
 		width: 100%;
 		background: var(--bg-color-1);
 		height: calc(100vh - 40px);
-		border-radius: 18px;
+		border-radius: 20px;
 		margin: 20px 20px 20px 0;
 	}
 
 	.content-container {
 		height: 100%;
 		width: 100%;
+		position: relative;
 	}
 
 	.background {
