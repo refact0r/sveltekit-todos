@@ -15,69 +15,34 @@
 </script>
 
 <script>
+	import { onMount } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { quartOut } from 'svelte/easing'
 	import { goto } from '$app/navigation'
-	import { session } from '$app/stores'
 	import { lists, loadLists } from '$lib/stores/lists.js'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
+	import DateModal from '$lib/DateModal.svelte'
+	import { epochToText } from '$lib/date.js'
 
 	export let listId
 	let text = ''
-	let listTodos
 	let listIndex
+	let modal
+	let currentTodo
+
+	onMount(() => {
+		let now = new Date(),
+			delay = 60000 - (now % 60000)
+		setTimeout(
+			setInterval(() => {
+				$todos = $todos
+			}, 60000),
+			delay
+		)
+	})
 
 	$: if ($lists) {
 		listIndex = $lists.findIndex((list) => list._id === listId)
-	}
-
-	async function addTodo() {
-		if (text == '') {
-			return
-		}
-		const todo = {
-			name: text,
-			completed: false,
-			listId: listId
-		}
-		text = ''
-		console.log(todo)
-		const res = await fetch(`/todos.json`, {
-			method: 'POST',
-			body: JSON.stringify(todo)
-		})
-		const json = await res.json()
-		$todos.push(json.todo)
-		$todos = $todos
-	}
-
-	async function completeTodo(index) {
-		$todos[index].completed = !$todos[index].completed
-		await fetch(`/todos.json`, {
-			method: 'PUT',
-			body: JSON.stringify($todos[index])
-		})
-	}
-
-	async function editTodo(todo, e) {
-		if (e.target.value == '') {
-			e.target.value = todo.name
-			return
-		}
-		todo.name = e.target.value
-		await fetch(`/todos.json`, {
-			method: 'PUT',
-			body: JSON.stringify(todo)
-		})
-	}
-
-	async function deleteTodo(index) {
-		const todo = $todos.splice(index, 1)[0]
-		$todos = $todos
-		await fetch(`/todos.json`, {
-			method: 'DELETE',
-			body: JSON.stringify(todo)
-		})
 	}
 
 	async function editList(e) {
@@ -105,6 +70,81 @@
 			body: JSON.stringify(list)
 		})
 		loadTodos()
+	}
+
+	async function addTodo() {
+		if (text == '') {
+			return
+		}
+		const todo = {
+			name: text,
+			completed: false,
+			listId: listId,
+			dueDate: null
+		}
+		text = ''
+		console.log(todo)
+		const res = await fetch(`/todos.json`, {
+			method: 'POST',
+			body: JSON.stringify(todo)
+		})
+		const json = await res.json()
+		$todos.push(json.todo)
+		$todos = $todos
+	}
+
+	async function completeTodo(todo) {
+		todo.completed = !todo.completed
+		$todos = $todos
+		await fetch(`/todos.json`, {
+			method: 'PUT',
+			body: JSON.stringify(todo)
+		})
+	}
+
+	async function editName(todo, e) {
+		if (e.target.value == '') {
+			e.target.value = todo.name
+			return
+		}
+		todo.name = e.target.value
+		await fetch(`/todos.json`, {
+			method: 'PUT',
+			body: JSON.stringify(todo)
+		})
+	}
+
+	async function deleteTodo(todo) {
+		$todos = $todos.filter((t) => t !== todo)
+		await fetch(`/todos.json`, {
+			method: 'DELETE',
+			body: JSON.stringify(todo)
+		})
+	}
+
+	async function startEditDate(todo) {
+		currentTodo = todo
+		modal.show(todo.dueDate)
+	}
+
+	async function finishEditDate(date) {
+		if (!date && currentTodo.dueDate !== null) {
+			currentTodo.dueDate = null
+			$todos = $todos
+			await fetch(`/todos.json`, {
+				method: 'PUT',
+				body: JSON.stringify(currentTodo)
+			})
+		}
+		if (date && date.getTime() != currentTodo.dueDate) {
+			currentTodo.dueDate = date.getTime()
+			$todos = $todos
+			await fetch(`/todos.json`, {
+				method: 'PUT',
+				body: JSON.stringify(currentTodo)
+			})
+		}
+		currentTodo = null
 	}
 
 	async function sync() {
@@ -142,60 +182,81 @@
 		</div>
 		<div class="item-container">
 			{#if $todos}
-				{#each $todos as todo, index}
-					{#if todo.listId === listId && !todo.completed}
-						<div
-							class="todo"
-							transition:slide|local={{ duration: 400, easing: quartOut }}
+				{#each $todos.filter((todo) => todo.listId === listId && !todo.completed) as todo (todo._id)}
+					<div class="todo" transition:slide|local={{ duration: 400, easing: quartOut }}>
+						<button
+							class={'icon-button ' +
+								(todo.completed ? 'checkbox checked' : 'checkbox')}
+							on:click={() => completeTodo(todo)}
 						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<input
+							class="name"
+							type="text"
+							value={todo.name}
+							on:change={(e) => editName(todo, e)}
+							on:keydown={(e) => blurOnEnter(e)}
+						/>
+						{#if todo.dueDate}
 							<button
-								class={'icon-button ' +
-									(todo.completed ? 'checkbox checked' : 'checkbox')}
-								on:click={() => completeTodo(index)}
+								class={'due-date' +
+									(new Date(todo.dueDate) - new Date() <= 0 ? ' overdue' : '')}
+								on:click={() => startEditDate(todo)}
 							>
-								<i class="bi bi-check-lg" />
+								{epochToText(todo.dueDate)}
 							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
-							<button class="icon-button delete" on:click={() => deleteTodo(index)}>
-								<i class="bi bi-x-lg" />
+						{:else}
+							<button
+								class="icon-button new-date"
+								on:click={() => startEditDate(todo)}
+							>
+								<i class="bi bi-calendar2-plus" />
 							</button>
-						</div>
-					{/if}
+						{/if}
+						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
+							<i class="bi bi-x-lg" />
+						</button>
+					</div>
 				{/each}
 				{#if $todos.find((todo) => todo.listId === listId && todo.completed)}
 					<h2 transition:slide|local={{ duration: 400, easing: quartOut }}>Completed</h2>
 				{/if}
-				{#each $todos as todo, index}
-					{#if todo.listId === listId && todo.completed}
-						<div
-							class="todo completed"
-							transition:slide|local={{ duration: 400, easing: quartOut }}
+				{#each $todos.filter((todo) => todo.listId === listId && todo.completed) as todo (todo._id)}
+					<div
+						class="todo completed"
+						transition:slide|local={{ duration: 400, easing: quartOut }}
+					>
+						<button
+							class={'icon-button ' +
+								(todo.completed ? 'checkbox checked' : 'checkbox')}
+							on:click={() => completeTodo(todo)}
 						>
+							<i class="bi bi-check-lg" />
+						</button>
+						<input
+							class="name"
+							type="text"
+							value={todo.name}
+							on:change={(e) => editName(todo, e)}
+							on:keydown={(e) => blurOnEnter(e)}
+						/>
+						{#if todo.dueDate}
+							<button class="due-date" on:click={() => startEditDate(todo)}>
+								{epochToText(todo.dueDate)}
+							</button>
+						{:else}
 							<button
-								class={'icon-button ' +
-									(todo.completed ? 'checkbox checked' : 'checkbox')}
-								on:click={() => completeTodo(index)}
+								class="icon-button new-date"
+								on:click={() => startEditDate(todo)}
 							>
-								<i class="bi bi-check-lg" />
+								<i class="bi bi-calendar2-plus" />
 							</button>
-							<input
-								class="name"
-								type="text"
-								value={todo.name}
-								on:change={(e) => editTodo(todo, e)}
-								on:keydown={(e) => blurOnEnter(e)}
-							/>
-							<button class="icon-button delete" on:click={() => deleteTodo(index)}>
-								<i class="bi bi-x-lg" />
-							</button>
-						</div>
-					{/if}
+						{/if}
+						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
+							<i class="bi bi-x-lg" />
+						</button>
+					</div>
 				{/each}
 			{/if}
 		</div>
@@ -209,6 +270,7 @@
 		</div>
 	</div>
 </div>
+<DateModal bind:this={modal} edit={(date) => finishEditDate(date)} />
 
 <style>
 	.content {

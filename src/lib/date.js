@@ -6,7 +6,7 @@ export function epochToText(epoch) {
 	let date = new Date(epoch)
 	let str = 'Due '
 	if (isToday(current, date)) {
-		let diff = Math.round((date - current) / 1000 / 60)
+		let diff = Math.floor((date - current) / 1000 / 60)
 		if (diff > 0 && diff < 60) {
 			str += `in ${diff} min`
 		} else if (diff <= 0 && diff > -60) {
