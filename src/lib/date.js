@@ -2,16 +2,11 @@ const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 export function epochToText(epoch) {
+	let current = new Date()
 	let date = new Date(epoch)
-	let currentDate = new Date()
 	let str = 'Due '
-	if (
-		date.getDate() === currentDate.getDate() &&
-		date.getMonth() === currentDate.getMonth() &&
-		date.getFullYear() === currentDate.getFullYear()
-	) {
-		let diff = Math.round((date - currentDate) / 1000 / 60)
-		console.log(diff)
+	if (isToday(current, date)) {
+		let diff = Math.round((date - current) / 1000 / 60)
 		if (diff > 0 && diff < 60) {
 			str += `in ${diff} min`
 		} else if (diff <= 0 && diff > -60) {
@@ -20,17 +15,9 @@ export function epochToText(epoch) {
 			str += `at ${formatTime(date)}`
 		}
 	} else {
-		if (
-			date.getDate() === currentDate.getDate() - 1 &&
-			date.getMonth() === currentDate.getMonth() &&
-			date.getFullYear() === currentDate.getFullYear()
-		) {
+		if (isYesterday(current, date)) {
 			str += 'yesterday '
-		} else if (
-			date.getDate() === currentDate.getDate() + 1 &&
-			date.getMonth() === currentDate.getMonth() &&
-			date.getFullYear() === currentDate.getFullYear()
-		) {
+		} else if (isTomorrow(current, date)) {
 			str += 'tomorrow '
 		} else {
 			str += `${days[date.getDay()]}, ${months[date.getMonth()]} ${date.getDate()} `
@@ -55,4 +42,24 @@ function formatTime(date) {
 	if (hours > 12) {
 		return `${hours - 12}:${mins} PM`
 	}
+}
+
+function isToday(current, date) {
+	return (
+		current.getDate() === date.getDate() &&
+		current.getMonth() === date.getMonth() &&
+		current.getFullYear() === date.getFullYear()
+	)
+}
+
+function isTomorrow(current, date) {
+	let copy = new Date(date.getTime())
+	copy.setDate(date.getDate() - 1)
+	return isToday(current, copy)
+}
+
+function isYesterday(current, date) {
+	let copy = new Date(date.getTime())
+	copy.setDate(copy.getDate() + 1)
+	return isToday(current, copy)
 }
