@@ -11,6 +11,7 @@
 </script>
 
 <script>
+	import { onMount } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { quartOut } from 'svelte/easing'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
@@ -22,7 +23,16 @@
 	let modal
 	let currentTodo
 
-	$: console.log($todos)
+	onMount(() => {
+		let now = new Date(),
+			delay = 60000 - (now % 60000)
+		setTimeout(
+			setInterval(() => {
+				$todos = $todos
+			}, 60000),
+			delay
+		)
+	})
 
 	async function addTodo() {
 		if (text == '') {
@@ -149,7 +159,11 @@
 							{/if}
 						</div>
 						{#if todo.dueDate}
-							<button class="date" on:click={() => startEditDate(todo)}>
+							<button
+								class={'due-date' +
+									(new Date(todo.dueDate) - new Date() <= 0 ? ' overdue' : '')}
+								on:click={() => startEditDate(todo)}
+							>
 								{epochToText(todo.dueDate)}
 							</button>
 						{:else}
@@ -160,8 +174,8 @@
 								<i class="bi bi-calendar2-plus" />
 							</button>
 						{/if}
-						<button class="icon-button delete" on:click={() => deleteTodo(todo)}
-							><i class="bi bi-x-lg" />
+						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
+							<i class="bi bi-x-lg" />
 						</button>
 					</div>
 				{/each}
@@ -194,6 +208,18 @@
 								</a>
 							{/if}
 						</div>
+						{#if todo.dueDate}
+							<button class="due-date" on:click={() => startEditDate(todo)}>
+								{epochToText(todo.dueDate)}
+							</button>
+						{:else}
+							<button
+								class="icon-button new-date"
+								on:click={() => startEditDate(todo)}
+							>
+								<i class="bi bi-calendar2-plus" />
+							</button>
+						{/if}
 						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
 							<i class="bi bi-x-lg" />
 						</button>
@@ -221,25 +247,13 @@
 	}
 
 	.list-name {
-		font-size: 0.75em;
+		font-size: 0.8em;
 		line-height: 1em;
 		color: var(--sub-color);
 		text-decoration: none;
 		width: fit-content;
 	}
 	.list-name:hover {
-		color: var(--font-color);
-	}
-
-	.date,
-	.new-date {
-		margin-left: 12px;
-	}
-
-	.date {
-		color: var(--sub-color);
-	}
-	.date:hover {
 		color: var(--font-color);
 	}
 </style>

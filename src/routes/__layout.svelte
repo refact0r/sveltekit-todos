@@ -13,7 +13,6 @@
 	import { onMount } from 'svelte'
 	import { session } from '$app/stores'
 	import { fly } from 'svelte/transition'
-	import { quartOut, quartIn } from 'svelte/easing'
 	import { todos, loadTodos } from '$lib/stores/todos.js'
 	import { loadLists } from '$lib/stores/lists.js'
 	import Nav from '$lib/nav/Nav.svelte'

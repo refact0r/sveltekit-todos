@@ -209,3 +209,20 @@ hr {
 .add:hover {
 	color: var(--sub-color);
 }
+
+.due-date,
+.new-date {
+	margin-left: 12px;
+}
+
+.due-date {
+	color: var(--sub-color);
+	font-size: 0.8em;
+	padding: 0;
+}
+.due-date.overdue {
+	color: hsl(0, 60%, 60%);
+}
+.due-date:hover {
+	color: var(--font-color);
+}
