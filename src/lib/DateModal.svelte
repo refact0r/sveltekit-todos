@@ -42,7 +42,7 @@
 {#if shown}
 	<div class="background" on:click|self={set}>
 		<div class="modal">
-			<h4>Due Date</h4>
+			<h4>Due date</h4>
 			<input class="date" type="date" bind:value={dateString} />
 			<input class="time" type="time" bind:value={timeString} />
 			<button on:click={clear}>Clear</button>
