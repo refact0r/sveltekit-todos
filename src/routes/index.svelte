@@ -7,7 +7,11 @@
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	{#if $session.user}
+		<title>Home</title>
+	{:else}
+		<title>SvelteKit Todos</title>
+	{/if}
 </svelte:head>
 
 {#if $session.user}
