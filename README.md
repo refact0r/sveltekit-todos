@@ -1,4 +1,4 @@
-# sveltekit-todos
+# Sveltekit Todos
 
 https://sveltekit-todos.netlify.app
 
