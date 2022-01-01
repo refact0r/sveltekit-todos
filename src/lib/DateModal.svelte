@@ -1,4 +1,7 @@
 <script>
+	import { fly } from 'svelte/transition'
+	import { fade } from 'svelte/transition'
+
 	let shown = false
 	let dateString = ''
 	let timeString = ''
@@ -40,8 +43,12 @@
 </script>
 
 {#if shown}
-	<div class="background" on:click|self={set}>
-		<div class="modal">
+	<div class="background" on:click|self={set} transition:fade={{ duration: 200 }}>
+		<div
+			class="modal"
+			in:fly={{ y: -5, duration: 200 }}
+			out:fly|local={{ y: 5, duration: 200 }}
+		>
 			<h4>Due date</h4>
 			<input class="date" type="date" bind:value={dateString} />
 			<input class="time" type="time" bind:value={timeString} />
