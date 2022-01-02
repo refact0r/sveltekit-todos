@@ -130,20 +130,27 @@
 		<div class="heading-container">
 			<h1>Todos</h1>
 			<button class="icon-button-lg sync" on:click={() => sync()}>
-				<i class="bi bi-arrow-repeat" />
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="currentColor"
+					class="bi bi-arrow-repeat"
+					viewBox="0 0 16 16"
+				>
+					<path
+						d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+					/>
+					<path
+						fill-rule="evenodd"
+						d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+					/>
+				</svg>
 			</button>
 		</div>
 		<div class="item-container">
 			{#if $todos}
 				{#each $todos.filter((todo) => !todo.completed) as todo (todo._id)}
 					<div class="todo" transition:slide|local={{ duration: 400, easing: quartOut }}>
-						<button
-							class={'icon-button ' +
-								(todo.completed ? 'checkbox checked' : 'checkbox')}
-							on:click={() => completeTodo(todo)}
-						>
-							<i class="bi bi-check-lg" />
-						</button>
+						<button class="icon-button checkbox" on:click={() => completeTodo(todo)} />
 						<div class="text-container">
 							<input
 								class="name"
@@ -171,11 +178,37 @@
 								class="icon-button new-date"
 								on:click={() => startEditDate(todo)}
 							>
-								<i class="bi bi-calendar2-plus" />
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="currentColor"
+									class="bi bi-calendar2-plus"
+									viewBox="0 0 16 16"
+								>
+									<path
+										d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"
+									/>
+									<path
+										d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM8 8a.5.5 0 0 1 .5.5V10H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V11H6a.5.5 0 0 1 0-1h1.5V8.5A.5.5 0 0 1 8 8z"
+									/>
+								</svg>
 							</button>
 						{/if}
 						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
-							<i class="bi bi-x-lg" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="currentColor"
+								class="bi bi-x-lg"
+								viewBox="0 0 16 16"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"
+								/>
+								<path
+									fill-rule="evenodd"
+									d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
+								/>
+							</svg>
 						</button>
 					</div>
 				{/each}
@@ -188,11 +221,19 @@
 						transition:slide|local={{ duration: 400, easing: quartOut }}
 					>
 						<button
-							class={'icon-button ' +
-								(todo.completed ? 'checkbox checked' : 'checkbox')}
+							class="icon-button checkbox checked"
 							on:click={() => completeTodo(todo)}
 						>
-							<i class="bi bi-check-lg" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="currentColor"
+								class="bi bi-check-lg"
+								viewBox="0 0 16 16"
+							>
+								<path
+									d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+								/>
+							</svg>
 						</button>
 						<div class="text-container">
 							<input
@@ -217,11 +258,37 @@
 								class="icon-button new-date"
 								on:click={() => startEditDate(todo)}
 							>
-								<i class="bi bi-calendar2-plus" />
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									fill="currentColor"
+									class="bi bi-calendar2-plus"
+									viewBox="0 0 16 16"
+								>
+									<path
+										d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"
+									/>
+									<path
+										d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4zM8 8a.5.5 0 0 1 .5.5V10H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V11H6a.5.5 0 0 1 0-1h1.5V8.5A.5.5 0 0 1 8 8z"
+									/>
+								</svg>
 							</button>
 						{/if}
 						<button class="icon-button delete" on:click={() => deleteTodo(todo)}>
-							<i class="bi bi-x-lg" />
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								fill="currentColor"
+								class="bi bi-x-lg"
+								viewBox="0 0 16 16"
+							>
+								<path
+									fill-rule="evenodd"
+									d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"
+								/>
+								<path
+									fill-rule="evenodd"
+									d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"
+								/>
+							</svg>
 						</button>
 					</div>
 				{/each}
@@ -230,7 +297,19 @@
 		<div class="new-container">
 			<form class="new" on:submit|preventDefault={addTodo}>
 				<button class={'icon-button add' + (text ? ' active' : '')} type="submit">
-					<i class="bi bi-plus-lg" />
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="16"
+						height="16"
+						fill="currentColor"
+						class="bi bi-plus-lg"
+						viewBox="0 0 16 16"
+					>
+						<path
+							fill-rule="evenodd"
+							d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"
+						/>
+					</svg>
 				</button>
 				<input class="name" type="text" placeholder="Add a todo" bind:value={text} />
 			</form>
