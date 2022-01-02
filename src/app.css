@@ -51,6 +51,7 @@ button {
 
 button {
 	flex-shrink: 0;
+	padding: 0;
 }
 button:hover {
 	cursor: pointer;
@@ -109,22 +110,25 @@ hr {
 
 .icon-button {
 	display: flex;
+	align-items: center;
+	justify-content: center;
+	display: flex;
 	width: 20px;
 	height: 20px;
-	padding: 0;
 	color: var(--sub-color);
 }
 .icon-button:hover {
 	color: var(--font-color);
 }
-.icon-button i {
-	line-height: 20px;
-	vertical-align: top;
-	text-align: center;
-	margin: auto;
+.icon-button svg {
+	width: 20px;
+	height: 20px;
 }
 
 .icon-button-lg {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	width: 36px;
 	height: 36px;
 	background: var(--bg-color-2);
@@ -134,8 +138,9 @@ hr {
 .icon-button-lg:hover {
 	background-color: var(--bg-color-2-5);
 }
-.icon-button-lg i {
-	font-size: 20px;
+.icon-button-lg svg {
+	width: 20px;
+	height: 20px;
 }
 
 .todo {
@@ -150,9 +155,6 @@ hr {
 	text-decoration: line-through;
 	color: var(--sub-color);
 }
-.todo.completed .checkbox i {
-	display: inline-block;
-}
 
 .checkbox {
 	border-radius: 6px;
@@ -165,8 +167,7 @@ hr {
 .checkbox:active {
 	background: var(--font-color);
 }
-.checkbox i {
-	display: none;
+.checkbox svg {
 	color: var(--font-color);
 	margin-right: 2px !important;
 }
