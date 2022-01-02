@@ -109,6 +109,7 @@ hr {
 
 .icon-button {
 	display: flex;
+	justify-content: center;
 	width: 20px;
 	height: 20px;
 	padding: 0;
@@ -119,9 +120,6 @@ hr {
 }
 .icon-button i {
 	line-height: 20px;
-	vertical-align: top;
-	text-align: center;
-	margin: auto;
 }
 
 .icon-button-lg {
